@@ -1,6 +1,6 @@
 # Agent Marketplace Platform - Sales Information
 
-## 🏢 PROPRIETARY SOFTWARE FOR SALE
+##  PROPRIETARY SOFTWARE FOR SALE
 
 **Owner**: Sean McDonnell  
 **Website**: https://bizbot.store  
@@ -8,7 +8,7 @@
 
 ---
 
-## 💼 What You're Getting
+##  What You're Getting
 
 ### Enterprise-Grade AI Platform
 - **10 Pre-built Agent Packages** - Ready for deployment
@@ -30,7 +30,7 @@
 
 ---
 
-## 💰 Licensing Options
+##  Licensing Options
 
 ### 1. Evaluation License
 **Purpose**: Test and assess the platform  
@@ -64,7 +64,7 @@
 
 ---
 
-## 🎯 Perfect For
+##  Perfect For
 
 ### Businesses Looking To:
 - Launch an AI agent marketplace
@@ -83,7 +83,7 @@
 
 ---
 
-## ✨ Key Selling Points
+##  Key Selling Points
 
 ### 1. Ready to Deploy
 - Complete infrastructure
@@ -118,7 +118,7 @@
 
 ---
 
-## 📊 ROI Calculator
+##  ROI Calculator
 
 ### Time Saved
 Building from scratch: **6-12 months**  
@@ -135,43 +135,43 @@ With 10,000 customers: **$990,000/month**
 
 ---
 
-## 🔧 What's Included
+##  What's Included
 
 ### Backend
-- ✅ FastAPI application
-- ✅ 10 agent packages
-- ✅ Authentication system
-- ✅ Billing integration
-- ✅ Analytics engine
-- ✅ WebSocket server
-- ✅ Database models
-- ✅ API endpoints
+-  FastAPI application
+-  10 agent packages
+-  Authentication system
+-  Billing integration
+-  Analytics engine
+-  WebSocket server
+-  Database models
+-  API endpoints
 
 ### Frontend
-- ✅ Next.js 15 setup
-- ✅ React components
-- ✅ TypeScript definitions
-- ✅ API client
-- ✅ Custom hooks
-- ✅ UI components
+-  Next.js 15 setup
+-  React components
+-  TypeScript definitions
+-  API client
+-  Custom hooks
+-  UI components
 
 ### Infrastructure
-- ✅ Docker Compose
-- ✅ Kubernetes manifests
-- ✅ CI/CD pipelines
-- ✅ Health checks
-- ✅ Auto-scaling config
+-  Docker Compose
+-  Kubernetes manifests
+-  CI/CD pipelines
+-  Health checks
+-  Auto-scaling config
 
 ### Documentation
-- ✅ Setup guides
-- ✅ API documentation
-- ✅ Deployment guides
-- ✅ Architecture docs
-- ✅ Stripe integration guide
+-  Setup guides
+-  API documentation
+-  Deployment guides
+-  Architecture docs
+-  Stripe integration guide
 
 ---
 
-## 🚀 Deployment Options
+##  Deployment Options
 
 ### Option 1: Self-Hosted
 - Deploy on your infrastructure
@@ -190,7 +190,7 @@ With 10,000 customers: **$990,000/month**
 
 ---
 
-## 💪 Support Options
+##  Support Options
 
 ### Basic Support
 - Email support
@@ -210,7 +210,7 @@ With 10,000 customers: **$990,000/month**
 
 ---
 
-## 📝 Purchase Process
+##  Purchase Process
 
 ### Step 1: Initial Contact
 Visit https://bizbot.store and request a meeting with Sean McDonnell
@@ -247,18 +247,18 @@ Visit https://bizbot.store and request a meeting with Sean McDonnell
 
 ---
 
-## 🎁 Bonus Included
+##  Bonus Included
 
 ### Free With Purchase:
-- ✅ 90 days of email support
-- ✅ All future updates for 1 year
-- ✅ Migration assistance
-- ✅ Deployment consultation
-- ✅ Architecture review
+-  90 days of email support
+-  All future updates for 1 year
+-  Migration assistance
+-  Deployment consultation
+-  Architecture review
 
 ---
 
-## ⚡ Limited Time Offer
+##  Limited Time Offer
 
 ### Early Adopter Benefits:
 - Special pricing for first 10 customers
@@ -270,7 +270,7 @@ Visit https://bizbot.store and request a meeting with Sean McDonnell
 
 ---
 
-## 🔒 Legal & Security
+##  Legal & Security
 
 ### Intellectual Property
 - All code is proprietary
@@ -292,7 +292,7 @@ Visit https://bizbot.store and request a meeting with Sean McDonnell
 
 ---
 
-## 📞 Contact Information
+##  Contact Information
 
 ### Get Started Today
 
@@ -310,7 +310,7 @@ Visit https://bizbot.store and request a meeting with Sean McDonnell
 
 ---
 
-## 🌟 Testimonials
+##  Testimonials
 
 *"This platform saved us 8 months of development time. We were able to launch our AI marketplace in just 3 weeks."*  
 — Future Customer
@@ -323,7 +323,7 @@ Visit https://bizbot.store and request a meeting with Sean McDonnell
 
 ---
 
-## 📈 Market Opportunity
+##  Market Opportunity
 
 ### AI Agent Market
 - Growing at 40% annually
@@ -339,7 +339,7 @@ Visit https://bizbot.store and request a meeting with Sean McDonnell
 
 ---
 
-## ❓ FAQ
+##  FAQ
 
 **Q: Can I see the code before purchasing?**  
 A: Yes, with an Evaluation License. Contact us.
@@ -361,7 +361,7 @@ A: No refunds after license delivery. Evaluation license available.
 
 ---
 
-## 🎯 Next Steps
+##  Next Steps
 
 ### Ready to Get Started?
 
@@ -374,7 +374,7 @@ A: No refunds after license delivery. Evaluation license available.
 
 ---
 
-## ⚠️ Important Notice
+##  Important Notice
 
 This software is proprietary and for sale only. No evaluation, testing, or use is permitted without a valid license agreement.
 
@@ -382,7 +382,7 @@ This software is proprietary and for sale only. No evaluation, testing, or use i
 
 ---
 
-## 🏆 Why Choose This Platform?
+##  Why Choose This Platform?
 
 ### Proven Technology
 - Built with latest frameworks

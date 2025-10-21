@@ -49,6 +49,9 @@ stripe==11.1.0
 # Security & Secrets Management
 hvac==2.1.0  # HashiCorp Vault client
 python-multipart==0.0.9
+cryptography==42.0.8  # Encryption and security
+bleach==6.1.0  # HTML sanitization
+pydantic[email]==2.9.2  # Email validation
 
 # Observability & Monitoring
 opentelemetry-api==1.27.0
@@ -57,6 +60,7 @@ opentelemetry-instrumentation-fastapi==0.48b0
 opentelemetry-instrumentation-redis==0.48b0
 opentelemetry-instrumentation-sqlalchemy==0.48b0
 opentelemetry-exporter-otlp-proto-grpc==1.27.0
+prometheus-client==0.20.0  # Prometheus metrics
 
 # Load Testing
 locust==2.29.1

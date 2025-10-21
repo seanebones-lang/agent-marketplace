@@ -1,11 +1,9 @@
-import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { 
   Globe, 
   Phone, 
-  Mail, 
   MessageSquare, 
   Clock,
   MapPin,

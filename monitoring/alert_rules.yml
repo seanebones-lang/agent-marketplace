@@ -1,0 +1,304 @@
+# Prometheus Alert Rules for Agent Marketplace Platform
+# Production-grade alerting configuration
+
+groups:
+  # ============================================================================
+  # HIGH PRIORITY ALERTS (Page on-call immediately)
+  # ============================================================================
+  
+  - name: critical_alerts
+    interval: 30s
+    rules:
+      # Service is down
+      - alert: ServiceDown
+        expr: up{job="agent-marketplace"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: platform
+        annotations:
+          summary: "Agent Marketplace service is down"
+          description: "The Agent Marketplace service has been down for more than 1 minute."
+          runbook: "https://docs.example.com/runbooks/service-down"
+      
+      # High error rate
+      - alert: HighErrorRate
+        expr: |
+          (
+            sum(rate(http_requests_total{status_code=~"5.."}[5m]))
+            /
+            sum(rate(http_requests_total[5m]))
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          component: api
+        annotations:
+          summary: "High HTTP error rate detected"
+          description: "Error rate is {{ $value | humanizePercentage }} (threshold: 5%)"
+          runbook: "https://docs.example.com/runbooks/high-error-rate"
+      
+      # Database connection pool exhausted
+      - alert: DatabaseConnectionPoolExhausted
+        expr: db_connections_active > 90
+        for: 2m
+        labels:
+          severity: critical
+          component: database
+        annotations:
+          summary: "Database connection pool near exhaustion"
+          description: "Active connections: {{ $value }} (max: 100)"
+          runbook: "https://docs.example.com/runbooks/db-connections"
+      
+      # Circuit breaker open
+      - alert: CircuitBreakerOpen
+        expr: circuit_breaker_state == 2
+        for: 5m
+        labels:
+          severity: critical
+          component: reliability
+        annotations:
+          summary: "Circuit breaker {{ $labels.name }} is OPEN"
+          description: "Circuit breaker has been open for 5 minutes, indicating persistent failures."
+          runbook: "https://docs.example.com/runbooks/circuit-breaker"
+      
+      # LLM provider down
+      - alert: LLMProviderDown
+        expr: |
+          (
+            sum(rate(llm_api_errors_total[5m])) by (provider)
+            /
+            sum(rate(llm_api_calls_total[5m])) by (provider)
+          ) > 0.5
+        for: 3m
+        labels:
+          severity: critical
+          component: llm
+        annotations:
+          summary: "LLM provider {{ $labels.provider }} has high error rate"
+          description: "Error rate: {{ $value | humanizePercentage }} (threshold: 50%)"
+          runbook: "https://docs.example.com/runbooks/llm-provider"
+
+  # ============================================================================
+  # MEDIUM PRIORITY ALERTS (Investigate during business hours)
+  # ============================================================================
+  
+  - name: warning_alerts
+    interval: 1m
+    rules:
+      # High response time
+      - alert: HighResponseTime
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (le, endpoint)
+          ) > 2
+        for: 10m
+        labels:
+          severity: warning
+          component: performance
+        annotations:
+          summary: "High response time on {{ $labels.endpoint }}"
+          description: "95th percentile response time is {{ $value }}s (threshold: 2s)"
+          runbook: "https://docs.example.com/runbooks/high-latency"
+      
+      # High agent execution time
+      - alert: HighAgentExecutionTime
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(agent_execution_duration_seconds_bucket[10m])) by (le, package_id)
+          ) > 60
+        for: 15m
+        labels:
+          severity: warning
+          component: agents
+        annotations:
+          summary: "High execution time for agent {{ $labels.package_id }}"
+          description: "95th percentile execution time is {{ $value }}s (threshold: 60s)"
+          runbook: "https://docs.example.com/runbooks/slow-agent"
+      
+      # High rate limit hit rate
+      - alert: HighRateLimitHitRate
+        expr: |
+          sum(rate(rate_limit_hits_total[5m])) by (tier)
+          > 10
+        for: 10m
+        labels:
+          severity: warning
+          component: rate_limiting
+        annotations:
+          summary: "High rate limit hit rate for tier {{ $labels.tier }}"
+          description: "Rate limit hits: {{ $value }}/s"
+          runbook: "https://docs.example.com/runbooks/rate-limits"
+      
+      # High database query time
+      - alert: HighDatabaseQueryTime
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(db_query_duration_seconds_bucket[5m])) by (le, operation)
+          ) > 0.5
+        for: 10m
+        labels:
+          severity: warning
+          component: database
+        annotations:
+          summary: "Slow database queries detected"
+          description: "95th percentile query time for {{ $labels.operation }}: {{ $value }}s"
+          runbook: "https://docs.example.com/runbooks/slow-queries"
+      
+      # Memory usage high
+      - alert: HighMemoryUsage
+        expr: |
+          (
+            node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes
+          ) / node_memory_MemTotal_bytes > 0.85
+        for: 10m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is {{ $value | humanizePercentage }} (threshold: 85%)"
+          runbook: "https://docs.example.com/runbooks/high-memory"
+      
+      # Disk space low
+      - alert: DiskSpaceLow
+        expr: |
+          (
+            node_filesystem_avail_bytes{mountpoint="/"}
+            /
+            node_filesystem_size_bytes{mountpoint="/"}
+          ) < 0.15
+        for: 10m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "Low disk space on root filesystem"
+          description: "Available space: {{ $value | humanizePercentage }} (threshold: 15%)"
+          runbook: "https://docs.example.com/runbooks/disk-space"
+
+  # ============================================================================
+  # LOW PRIORITY ALERTS (Informational, track trends)
+  # ============================================================================
+  
+  - name: info_alerts
+    interval: 5m
+    rules:
+      # High agent cost
+      - alert: HighAgentCost
+        expr: |
+          sum(rate(agent_cost_usd_total[1h])) by (package_id)
+          > 10
+        for: 1h
+        labels:
+          severity: info
+          component: billing
+        annotations:
+          summary: "High cost for agent {{ $labels.package_id }}"
+          description: "Cost rate: ${{ $value }}/hour"
+          runbook: "https://docs.example.com/runbooks/high-cost"
+      
+      # Unusual traffic pattern
+      - alert: UnusualTrafficPattern
+        expr: |
+          abs(
+            sum(rate(http_requests_total[10m]))
+            -
+            sum(rate(http_requests_total[10m] offset 1d))
+          ) / sum(rate(http_requests_total[10m] offset 1d)) > 0.5
+        for: 30m
+        labels:
+          severity: info
+          component: traffic
+        annotations:
+          summary: "Unusual traffic pattern detected"
+          description: "Traffic is {{ $value | humanizePercentage }} different from 24h ago"
+          runbook: "https://docs.example.com/runbooks/traffic-anomaly"
+      
+      # High token usage
+      - alert: HighTokenUsage
+        expr: |
+          sum(rate(agent_tokens_used_total[1h])) by (tier)
+          > 1000000
+        for: 1h
+        labels:
+          severity: info
+          component: usage
+        annotations:
+          summary: "High token usage for tier {{ $labels.tier }}"
+          description: "Token usage rate: {{ $value }}/hour"
+          runbook: "https://docs.example.com/runbooks/token-usage"
+
+  # ============================================================================
+  # BUSINESS METRICS ALERTS
+  # ============================================================================
+  
+  - name: business_alerts
+    interval: 5m
+    rules:
+      # Low customer signups
+      - alert: LowCustomerSignups
+        expr: |
+          sum(increase(customer_signups_total[24h]))
+          < 10
+        for: 24h
+        labels:
+          severity: info
+          component: business
+        annotations:
+          summary: "Low customer signup rate"
+          description: "Only {{ $value }} signups in the last 24 hours"
+          runbook: "https://docs.example.com/runbooks/low-signups"
+      
+      # Revenue drop
+      - alert: RevenueDrop
+        expr: |
+          (
+            sum(rate(revenue_usd_total[24h]))
+            -
+            sum(rate(revenue_usd_total[24h] offset 7d))
+          ) / sum(rate(revenue_usd_total[24h] offset 7d)) < -0.2
+        for: 24h
+        labels:
+          severity: warning
+          component: business
+        annotations:
+          summary: "Revenue drop detected"
+          description: "Revenue is down {{ $value | humanizePercentage }} compared to last week"
+          runbook: "https://docs.example.com/runbooks/revenue-drop"
+
+  # ============================================================================
+  # SECURITY ALERTS
+  # ============================================================================
+  
+  - name: security_alerts
+    interval: 1m
+    rules:
+      # High rate of authentication failures
+      - alert: HighAuthenticationFailureRate
+        expr: |
+          sum(rate(http_requests_total{endpoint="/api/v1/auth/login",status_code="401"}[5m]))
+          > 10
+        for: 5m
+        labels:
+          severity: warning
+          component: security
+        annotations:
+          summary: "High authentication failure rate"
+          description: "{{ $value }} failed login attempts per second"
+          runbook: "https://docs.example.com/runbooks/auth-failures"
+      
+      # DDoS attack suspected
+      - alert: PossibleDDoSAttack
+        expr: |
+          sum(rate(http_requests_total[1m]))
+          > 1000
+        for: 2m
+        labels:
+          severity: critical
+          component: security
+        annotations:
+          summary: "Possible DDoS attack detected"
+          description: "Request rate: {{ $value }}/s (threshold: 1000/s)"
+          runbook: "https://docs.example.com/runbooks/ddos"
+

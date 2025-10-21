@@ -6,18 +6,18 @@ The Agent Marketplace supports **5 distinct model tiers** powered by Anthropic's
 
 ## Available Tiers
 
-### 1. BYOK (Bring Your Own Key) 🔑
+### 1. BYOK (Bring Your Own Key) 
 
 **Model:** User-provided Anthropic API key  
 **Cost:** $0.00 (you pay Anthropic directly)  
 **Best For:** Enterprise customers, high-volume users, custom billing requirements
 
 #### Benefits:
-- ✅ Zero marketplace markup
-- ✅ Direct billing with Anthropic
-- ✅ Full control over API usage
-- ✅ Access to all Claude models
-- ✅ No token limits from marketplace
+-  Zero marketplace markup
+-  Direct billing with Anthropic
+-  Full control over API usage
+-  Access to all Claude models
+-  No token limits from marketplace
 
 #### How to Use:
 1. Get your API key from https://console.anthropic.com/
@@ -32,7 +32,7 @@ The Agent Marketplace supports **5 distinct model tiers** powered by Anthropic's
 
 ---
 
-### 2. BASIC (Haiku 3.5) ⚡
+### 2. BASIC (Haiku 3.5) 
 
 **Model:** `claude-3-5-haiku-20241022`  
 **Input:** $0.80 per 1M tokens  
@@ -54,7 +54,7 @@ The Agent Marketplace supports **5 distinct model tiers** powered by Anthropic's
 
 ---
 
-### 3. STANDARD (Sonnet 4) 🎯
+### 3. STANDARD (Sonnet 4) 
 
 **Model:** `claude-sonnet-4-20250514`  
 **Input:** $3.00 per 1M tokens  
@@ -76,7 +76,7 @@ The Agent Marketplace supports **5 distinct model tiers** powered by Anthropic's
 
 ---
 
-### 4. PREMIUM (Sonnet 4.5) 🚀
+### 4. PREMIUM (Sonnet 4.5) 
 
 **Model:** `claude-sonnet-4.5-20250514`  
 **Input:** $3.00 per 1M tokens (≤200K)  
@@ -98,7 +98,7 @@ The Agent Marketplace supports **5 distinct model tiers** powered by Anthropic's
 
 ---
 
-### 5. ELITE (Opus 4.1) 💎
+### 5. ELITE (Opus 4.1) 
 
 **Model:** `claude-opus-4.1-20250514`  
 **Input:** $15.00 per 1M tokens  
@@ -286,9 +286,9 @@ With BYOK, you pay $0 to the marketplace and only pay Anthropic's standard rates
 ## Support
 
 For questions about tier selection or pricing:
-- 📧 Email: support@bizbot.store
-- 📞 Phone: (817) 675-9898
-- 🌐 Web: https://bizbot.store
+-  Email: support@bizbot.store
+-  Phone: (817) 675-9898
+-  Web: https://bizbot.store
 
 ---
 

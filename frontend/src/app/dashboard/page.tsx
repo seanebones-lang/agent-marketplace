@@ -3,20 +3,17 @@
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { 
   Activity, 
-  TrendingUp, 
   Users, 
   Zap, 
   Clock, 
   CheckCircle,
   XCircle,
-  AlertCircle,
   ArrowUpRight,
   ArrowDownRight
 } from 'lucide-react'
-import { AreaChart, Area, BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { AreaChart, Area, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 const executionData = [
   { time: '00:00', executions: 120, success: 118, failed: 2 },

@@ -40,6 +40,7 @@ class Customer(Base):
     
     # Relationships
     deployments = relationship("Deployment", back_populates="customer")
+    execution_history = relationship("ExecutionHistory", back_populates="customer", lazy="dynamic")
     
     def __repr__(self):
         return f"<Customer(id={self.id}, org_name='{self.org_name}', tier='{self.tier}')>"

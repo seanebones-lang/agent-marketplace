@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
 from core.config import settings
-from api.v1 import marketplace, health, auth, websocket, analytics, history, billing, tiers
+from api.v1 import marketplace, health, auth, websocket, analytics, history, billing, tiers, usage, rate_limits, monitoring, metrics
 from database import engine
 from models import base
 
@@ -25,10 +25,43 @@ async def lifespan(app: FastAPI):
     base.Base.metadata.create_all(bind=engine)
     print("Database tables created")
     
+    # Initialize Redis and Rate Limiter
+    try:
+        import redis
+        from core.rate_limiter import get_rate_limiter
+        
+        redis_client = redis.Redis.from_url(
+            settings.redis_url,
+            decode_responses=True,
+            socket_connect_timeout=5
+        )
+        
+        # Test Redis connection
+        redis_client.ping()
+        print(f"Redis connected: {settings.redis_url}")
+        
+        # Initialize rate limiter
+        rate_limiter = get_rate_limiter(redis_client)
+        app.state.rate_limiter = rate_limiter
+        print("Rate limiter initialized")
+        
+    except Exception as e:
+        print(f"Warning: Redis/Rate Limiter initialization failed: {e}")
+        print("Rate limiting will be disabled")
+        app.state.rate_limiter = None
+    
     yield
     
     # Shutdown
     print("Shutting down Agent Marketplace Platform...")
+    
+    # Close Redis connection
+    if hasattr(app.state, "rate_limiter") and app.state.rate_limiter:
+        try:
+            app.state.rate_limiter.redis.close()
+            print("Redis connection closed")
+        except Exception as e:
+            print(f"Error closing Redis: {e}")
 
 
 app = FastAPI(
@@ -39,6 +72,26 @@ app = FastAPI(
     redoc_url="/redoc",
     lifespan=lifespan
 )
+
+# Security middleware (order matters - add before CORS)
+from core.security_middleware import (
+    SecurityHeadersMiddleware,
+    RequestValidationMiddleware,
+    RequestLoggingMiddleware,
+    DDoSProtectionMiddleware
+)
+
+# DDoS protection (outermost layer)
+app.add_middleware(DDoSProtectionMiddleware, max_requests_per_minute=200)
+
+# Request logging
+app.add_middleware(RequestLoggingMiddleware)
+
+# Request validation
+app.add_middleware(RequestValidationMiddleware)
+
+# Security headers
+app.add_middleware(SecurityHeadersMiddleware)
 
 # CORS middleware
 app.add_middleware(
@@ -103,6 +156,30 @@ app.include_router(
     tiers.router,
     prefix="/api/v1",
     tags=["Model Tiers"]
+)
+
+app.include_router(
+    usage.router,
+    prefix="/api/v1/usage",
+    tags=["Usage & Billing"]
+)
+
+app.include_router(
+    rate_limits.router,
+    prefix="/api/v1",
+    tags=["Rate Limits"]
+)
+
+app.include_router(
+    monitoring.router,
+    prefix="/api/v1",
+    tags=["Monitoring"]
+)
+
+app.include_router(
+    metrics.router,
+    prefix="/api/v1",
+    tags=["Metrics"]
 )
 
 

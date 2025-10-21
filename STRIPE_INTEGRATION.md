@@ -467,5 +467,5 @@ For Stripe integration issues:
 
 ---
 
-**The platform is now fully integrated with Stripe for production-ready billing!** 💳
+**The platform is now fully integrated with Stripe for production-ready billing!** 
 

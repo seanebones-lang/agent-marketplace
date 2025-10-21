@@ -89,24 +89,24 @@ npm start
 
 ```
 frontend/
-├── src/
-│   ├── app/              # Next.js app router pages
-│   │   ├── agents/       # Agent marketplace
-│   │   ├── playground/   # Interactive demo
-│   │   ├── dashboard/    # Analytics dashboard
-│   │   ├── pricing/      # Pricing page
-│   │   ├── login/        # Authentication
-│   │   └── signup/       # Registration
-│   ├── components/       # React components
-│   │   ├── ui/          # UI primitives
-│   │   ├── navigation.tsx
-│   │   ├── footer.tsx
-│   │   └── providers.tsx
-│   ├── hooks/           # Custom React hooks
-│   ├── lib/             # Utilities
-│   └── types/           # TypeScript types
-├── public/              # Static assets
-└── package.json
+ src/
+    app/              # Next.js app router pages
+       agents/       # Agent marketplace
+       playground/   # Interactive demo
+       dashboard/    # Analytics dashboard
+       pricing/      # Pricing page
+       login/        # Authentication
+       signup/       # Registration
+    components/       # React components
+       ui/          # UI primitives
+       navigation.tsx
+       footer.tsx
+       providers.tsx
+    hooks/           # Custom React hooks
+    lib/             # Utilities
+    types/           # TypeScript types
+ public/              # Static assets
+ package.json
 ```
 
 ## Features

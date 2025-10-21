@@ -1,0 +1,24 @@
+# Ignore backend files
+backend/
+*.py
+requirements.txt
+alembic/
+alembic.ini
+
+# Ignore documentation files
+*.md
+!README.md
+
+# Ignore deployment files
+docker-compose*.yml
+Dockerfile
+k8s/
+monitoring/
+
+# Ignore other frontend directories (if any)
+node_modules/
+.next/
+.vercel/
+
+# Keep only frontend for deployment
+!frontend/

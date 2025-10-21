@@ -4,7 +4,7 @@
 
 ---
 
-## ⚠️ IMPORTANT LEGAL NOTICE ⚠️
+##  IMPORTANT LEGAL NOTICE 
 
 This software is **PROPRIETARY** and **FOR SALE ONLY**.
 
@@ -253,19 +253,19 @@ By accessing, downloading, or using this software, you acknowledge that you have
 
 ---
 
-## 🔒 REMEMBER
+##  REMEMBER
 
 ### This Software Is:
-- ✅ FOR SALE
-- ✅ PROPRIETARY
-- ✅ PROTECTED BY LAW
-- ❌ NOT FREE
-- ❌ NOT OPEN SOURCE
-- ❌ NOT FOR EVALUATION WITHOUT LICENSE
+-  FOR SALE
+-  PROPRIETARY
+-  PROTECTED BY LAW
+-  NOT FREE
+-  NOT OPEN SOURCE
+-  NOT FOR EVALUATION WITHOUT LICENSE
 
 ---
 
-## 📞 GET LICENSED
+##  GET LICENSED
 
 **Don't risk legal trouble. Get licensed today!**
 

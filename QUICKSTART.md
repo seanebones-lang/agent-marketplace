@@ -106,6 +106,6 @@ docker-compose restart db
 
 ---
 
-**Phase 1 Complete** ✅  
-**Ready to Use** 🚀
+**Phase 1 Complete**   
+**Ready to Use** 
 

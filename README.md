@@ -12,10 +12,10 @@ The Agent Marketplace Platform is a production-ready Agent-as-a-Service (AaaS) s
 
 ```
 Frontend (Next.js)          Backend (FastAPI)           Infrastructure
-├─ Marketing Site           ├─ Agent Orchestration      ├─ PostgreSQL 16 (state)
-├─ Customer Dashboard       ├─ Marketplace API          ├─ Redis 7 (cache/queue)
-├─ Agent Builder UI         ├─ Billing Integration      ├─ Qdrant 1.11+ (vector memory)
-└─ Admin Panel              └─ Deployment Manager       └─ Docker
+ Marketing Site            Agent Orchestration       PostgreSQL 16 (state)
+ Customer Dashboard        Marketplace API           Redis 7 (cache/queue)
+ Agent Builder UI          Billing Integration       Qdrant 1.11+ (vector memory)
+ Admin Panel               Deployment Manager        Docker
 ```
 
 ## Available Agent Packages
@@ -123,28 +123,28 @@ curl http://localhost:8000/api/v1/packages/incident-responder
 
 ```
 /Users/seanmcdonnell/Desktop/Agentic/
-├── backend/
-│   ├── main.py                 # FastAPI application
-│   ├── core/
-│   │   ├── agent_engine.py     # Unified agent execution engine
-│   │   ├── config.py           # Configuration settings
-│   │   └── dependencies.py     # Dependency injection
-│   ├── models/
-│   │   ├── customer.py         # Customer model
-│   │   ├── agent.py            # Agent package model
-│   │   └── deployment.py       # Deployment and usage models
-│   ├── agents/
-│   │   └── packages/           # Pre-built agent packages
-│   ├── api/
-│   │   └── v1/
-│   │       ├── marketplace.py  # Marketplace endpoints
-│   │       └── health.py       # Health check endpoints
-│   ├── database.py             # Database session management
-│   ├── Dockerfile
-│   └── requirements.txt
-├── docker-compose.yml
-├── .env.example
-└── README.md
+ backend/
+    main.py                 # FastAPI application
+    core/
+       agent_engine.py     # Unified agent execution engine
+       config.py           # Configuration settings
+       dependencies.py     # Dependency injection
+    models/
+       customer.py         # Customer model
+       agent.py            # Agent package model
+       deployment.py       # Deployment and usage models
+    agents/
+       packages/           # Pre-built agent packages
+    api/
+       v1/
+           marketplace.py  # Marketplace endpoints
+           health.py       # Health check endpoints
+    database.py             # Database session management
+    Dockerfile
+    requirements.txt
+ docker-compose.yml
+ .env.example
+ README.md
 ```
 
 ### Running Tests
@@ -279,7 +279,7 @@ This is a private enterprise project. For questions or issues, contact the devel
 
 This software is proprietary and confidential. All rights reserved.
 
-**⚠️ NO EVALUATION OR USE WITHOUT LICENSE ⚠️**
+** NO EVALUATION OR USE WITHOUT LICENSE **
 
 ### Licensing Required
 
@@ -306,22 +306,22 @@ For technical support or questions:
 
 ---
 
-## 🚨 Production Readiness Status
+##  Production Readiness Status
 
-### Current Status: 40% Production Ready ⚠️
+### Current Status: 40% Production Ready 
 
-**⚠️ IMPORTANT: Platform is NOT ready for production launch**
+** IMPORTANT: Platform is NOT ready for production launch**
 
 This is a functional demo/prototype with significant work remaining before it can process real customer orders.
 
-### What's Working ✅
+### What's Working 
 - 4 out of 10 agents (Security Scanner, Incident Responder, Ticket Resolver, Knowledge Base)
 - 7-tier pricing system (SOLO, BASIC, SILVER, STANDARD, PREMIUM, ELITE, BYOK)
 - Frontend UI (60% complete)
 - Documentation (70% complete)
 - Database schema (50% complete)
 
-### Critical Blockers ❌
+### Critical Blockers 
 - **6 agents incomplete** - Data Processor, Deployment Agent, Audit Agent, Workflow Orchestrator, Report Generator, Escalation Manager (NO IMPLEMENTATION)
 - **No real API execution** - Currently returns mock data only
 - **No payment processing** - Stripe integration not implemented

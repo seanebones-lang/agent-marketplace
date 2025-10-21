@@ -8,7 +8,7 @@ All pricing is set at **5% below market rates** to provide competitive advantage
 
 ## Tier Structure (7 Tiers)
 
-### 1. 🎯 SOLO - Entry Level
+### 1.  SOLO - Entry Level
 **Target:** Individual developers, testing, learning  
 **Model:** Claude Haiku 3.5  
 **Base Cost:** $0.005/execution (5% below $0.0053)  
@@ -24,7 +24,7 @@ All pricing is set at **5% below market rates** to provide competitive advantage
 
 ---
 
-### 2. ⚡ BASIC - Fast & Economical
+### 2.  BASIC - Fast & Economical
 **Target:** Simple tasks, high-volume low-complexity  
 **Model:** Claude Haiku 3.5  
 **Base Cost:** $0.0095/execution (5% below $0.01)  
@@ -44,7 +44,7 @@ All pricing is set at **5% below market rates** to provide competitive advantage
 
 ---
 
-### 3. 🥈 SILVER - Enhanced Features
+### 3.  SILVER - Enhanced Features
 **Target:** Growing teams, regular usage  
 **Model:** Claude Sonnet 4  
 **Base Cost:** $0.038/execution (5% below $0.04)  
@@ -70,7 +70,7 @@ All pricing is set at **5% below market rates** to provide competitive advantage
 
 ---
 
-### 4. 🎯 STANDARD - Balanced Performance
+### 4.  STANDARD - Balanced Performance
 **Target:** Most enterprise workloads  
 **Model:** Claude Sonnet 4  
 **Base Cost:** $0.0475/execution (5% below $0.05)  
@@ -97,7 +97,7 @@ All pricing is set at **5% below market rates** to provide competitive advantage
 
 ---
 
-### 5. 🚀 PREMIUM - Advanced Agents
+### 5.  PREMIUM - Advanced Agents
 **Target:** Complex agents, code generation  
 **Model:** Claude Sonnet 4.5  
 **Base Cost:** $0.076/execution (5% below $0.08)  
@@ -124,7 +124,7 @@ All pricing is set at **5% below market rates** to provide competitive advantage
 
 ---
 
-### 6. 💎 ELITE - Maximum Intelligence
+### 6.  ELITE - Maximum Intelligence
 **Target:** Mission-critical, complex problems  
 **Model:** Claude Opus 4.1  
 **Base Cost:** $0.2375/execution (5% below $0.25)  
@@ -153,7 +153,7 @@ All pricing is set at **5% below market rates** to provide competitive advantage
 
 ---
 
-### 7. 🔑 BYOK - Bring Your Own Key
+### 7.  BYOK - Bring Your Own Key
 **Target:** Enterprise, high-volume, custom billing  
 **Model:** User-provided Anthropic API key  
 **Base Cost:** $0.00 (you pay Anthropic directly)  
@@ -251,16 +251,16 @@ All pricing is set at **5% below market rates** to provide competitive advantage
 
 | Feature | SOLO | BASIC | SILVER | STANDARD | PREMIUM | ELITE | BYOK |
 |---------|------|-------|--------|----------|---------|-------|------|
-| **API Access** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Webhook Integration** | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **API Access** |  |  |  |  |  |  |  |
+| **Webhook Integration** |  |  |  |  |  |  |  |
 | **Analytics Dashboard** | Basic | Basic | Advanced | Advanced | Premium | Premium | Premium |
 | **Support** | Email | Email | Priority | Priority | Dedicated | White-glove | Enterprise |
 | **Rate Limit** | 10/min | 60/min | 120/min | 300/min | 600/min | 1200/min | Custom |
 | **Team Members** | 1 | 3 | 5 | 10 | 25 | Unlimited | Unlimited |
-| **Custom Integrations** | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ |
+| **Custom Integrations** |  |  |  |  |  |  |  |
 | **SLA** | None | 99% | 99.5% | 99.9% | 99.95% | 99.99% | Custom |
-| **Dedicated Manager** | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
-| **Custom Models** | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| **Dedicated Manager** |  |  |  |  |  |  |  |
+| **Custom Models** |  |  |  |  |  |  |  |
 
 ---
 
@@ -311,10 +311,10 @@ All tiers include:
 
 For custom pricing, enterprise agreements, or volume discounts:
 
-📧 **Email:** sales@bizbot.store  
-📞 **Phone:** (817) 675-9898  
-🌐 **Web:** https://bizbot.store  
-💬 **Chat:** Available 24/7 on our website
+ **Email:** sales@bizbot.store  
+ **Phone:** (817) 675-9898  
+ **Web:** https://bizbot.store  
+ **Chat:** Available 24/7 on our website
 
 ---
 

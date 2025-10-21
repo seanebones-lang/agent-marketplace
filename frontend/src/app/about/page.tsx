@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -6,14 +5,10 @@ import {
   Zap, 
   Shield, 
   Globe, 
-  TrendingUp, 
-  Users, 
   Award,
-  Target,
   Rocket,
   Heart,
-  Phone,
-  Mail
+  Phone
 } from 'lucide-react'
 
 export default function AboutPage() {

@@ -11,14 +11,14 @@ The BYOK tier allows you to use your own Anthropic API key while accessing our f
 ### Platform Fee: $0.002 per execution
 
 This covers:
-- ✅ Platform infrastructure and hosting
-- ✅ API gateway and request routing
-- ✅ Security and authentication
-- ✅ Usage analytics and monitoring
-- ✅ Webhook integrations
-- ✅ Team collaboration tools
-- ✅ Priority support
-- ✅ Audit logging and compliance
+-  Platform infrastructure and hosting
+-  API gateway and request routing
+-  Security and authentication
+-  Usage analytics and monitoring
+-  Webhook integrations
+-  Team collaboration tools
+-  Priority support
+-  Audit logging and compliance
 
 ### Token Costs: Paid directly to Anthropic
 
@@ -49,7 +49,7 @@ You pay Anthropic's standard rates:
 
 ## When BYOK Makes Sense
 
-### ✅ Perfect For:
+###  Perfect For:
 
 1. **High-Volume Users**
    - 10,000+ executions/month
@@ -72,7 +72,7 @@ You pay Anthropic's standard rates:
    - Need flexibility to switch models
    - Testing and optimization workflows
 
-### ❌ Not Ideal For:
+###  Not Ideal For:
 
 1. **Low-Volume Users**
    - < 1,000 executions/month
@@ -246,11 +246,11 @@ For even better value, combine BYOK with a monthly subscription:
 
 ### Your API Key is Safe
 
-- ✅ **Never stored** - used only during request
-- ✅ **Encrypted in transit** - TLS 1.3
-- ✅ **Not logged** - zero retention
-- ✅ **Audited** - SOC 2 compliant
-- ✅ **Revocable** - change anytime
+-  **Never stored** - used only during request
+-  **Encrypted in transit** - TLS 1.3
+-  **Not logged** - zero retention
+-  **Audited** - SOC 2 compliant
+-  **Revocable** - change anytime
 
 ### Compliance
 
@@ -304,18 +304,18 @@ For even better value, combine BYOK with a monthly subscription:
 ## Recommendation
 
 ### Choose BYOK if:
-- ✅ You already have an Anthropic account
-- ✅ You run 10K+ executions/month
-- ✅ You want maximum cost control
-- ✅ You need direct vendor relationships
-- ✅ You want to use multiple Claude models
+-  You already have an Anthropic account
+-  You run 10K+ executions/month
+-  You want maximum cost control
+-  You need direct vendor relationships
+-  You want to use multiple Claude models
 
 ### Choose Standard if:
-- ✅ You want simple, predictable pricing
-- ✅ You prefer single billing
-- ✅ You're running < 10K executions/month
-- ✅ You want zero setup hassle
-- ✅ You value convenience over savings
+-  You want simple, predictable pricing
+-  You prefer single billing
+-  You're running < 10K executions/month
+-  You want zero setup hassle
+-  You value convenience over savings
 
 ---
 
@@ -323,10 +323,10 @@ For even better value, combine BYOK with a monthly subscription:
 
 Questions about BYOK pricing?
 
-📞 **Phone:** (817) 675-9898  
-📧 **Email:** sales@bizbot.store  
-🌐 **Web:** https://bizbot.store  
-💬 **Chat:** 24/7 on our website
+ **Phone:** (817) 675-9898  
+ **Email:** sales@bizbot.store  
+ **Web:** https://bizbot.store  
+ **Chat:** 24/7 on our website
 
 ---
 
