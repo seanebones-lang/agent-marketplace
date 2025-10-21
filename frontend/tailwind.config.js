@@ -9,6 +9,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        gray: {
+          50: '#f9fafb',
+          100: '#f3f4f6',
+          200: '#e5e7eb',
+          300: '#d1d5db',
+          400: '#6b7280',  // Much darker for better contrast
+          500: '#4b5563',  // Much darker for better contrast
+          600: '#374151',  // Much darker for better contrast
+          700: '#1f2937',
+          800: '#111827',
+          900: '#030712',
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
