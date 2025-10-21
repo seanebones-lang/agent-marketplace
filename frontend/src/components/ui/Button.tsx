@@ -21,6 +21,7 @@ export const Button: FC<ButtonProps> = ({
   fullWidth = false,
   disabled,
   className,
+  asChild,
   ...props
 }) => {
   const baseStyles = 'font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
