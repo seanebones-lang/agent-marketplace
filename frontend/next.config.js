@@ -49,17 +49,6 @@ const nextConfig = {
     ]
   },
 
-  // Redirects
-  async redirects() {
-    return [
-      {
-        source: '/docs',
-        destination: '/docs/getting-started',
-        permanent: false,
-      },
-    ]
-  },
-
   // Environment variables
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
