@@ -46,3 +46,18 @@ faker==30.3.0
 # Billing
 stripe==11.1.0
 
+# Security & Secrets Management
+hvac==2.1.0  # HashiCorp Vault client
+python-multipart==0.0.9
+
+# Observability & Monitoring
+opentelemetry-api==1.27.0
+opentelemetry-sdk==1.27.0
+opentelemetry-instrumentation-fastapi==0.48b0
+opentelemetry-instrumentation-redis==0.48b0
+opentelemetry-instrumentation-sqlalchemy==0.48b0
+opentelemetry-exporter-otlp-proto-grpc==1.27.0
+
+# Load Testing
+locust==2.29.1
+
