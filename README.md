@@ -275,7 +275,28 @@ This is a private enterprise project. For questions or issues, contact the devel
 
 ## License
 
-Proprietary - All rights reserved.
+**PROPRIETARY SOFTWARE - FOR SALE**
+
+This software is proprietary and confidential. All rights reserved.
+
+**⚠️ NO EVALUATION OR USE WITHOUT LICENSE ⚠️**
+
+### Licensing Required
+
+To obtain a license for evaluation, development, or commercial use:
+
+**Contact**: Sean McDonnell  
+**Website**: https://bizbot.store  
+**Purpose**: Arrange meeting to discuss licensing terms
+
+### Legal Notice
+
+- This software is sold "AS IS" without warranty
+- Unauthorized use is strictly prohibited
+- All intellectual property rights reserved
+- See LICENSE.md and LEGAL_NOTICE.md for full terms
+
+**Copyright © 2025 Sean McDonnell. All Rights Reserved.**
 
 ## Support
 
