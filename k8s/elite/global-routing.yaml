@@ -1,0 +1,365 @@
+---
+# Global Low-Latency Architecture
+# Multi-region deployment with intelligent routing
+
+# Gateway API for global routing
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: global-agent-gateway
+  namespace: agentic
+  labels:
+    app: agent-marketplace
+    tier: elite
+spec:
+  gatewayClassName: global-lb
+  listeners:
+  - name: https
+    protocol: HTTPS
+    port: 443
+    hostname: "*.agentic.ai"
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: wildcard-tls-cert
+  - name: http
+    protocol: HTTP
+    port: 80
+    hostname: "*.agentic.ai"
+
+---
+# HTTPRoute with geo-based routing
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: agent-global-routing
+  namespace: agentic
+spec:
+  parentRefs:
+  - name: global-agent-gateway
+  hostnames:
+  - "api.agentic.ai"
+  rules:
+  # Route to nearest region based on client location
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /api/v1
+    backendRefs:
+    - name: backend-us-east
+      port: 8000
+      weight: 100
+      filters:
+      - type: RequestHeaderModifier
+        requestHeaderModifier:
+          set:
+          - name: X-Region
+            value: us-east-1
+    - name: backend-eu-west
+      port: 8000
+      weight: 100
+      filters:
+      - type: RequestHeaderModifier
+        requestHeaderModifier:
+          set:
+          - name: X-Region
+            value: eu-west-1
+    - name: backend-ap-south
+      port: 8000
+      weight: 100
+      filters:
+      - type: RequestHeaderModifier
+        requestHeaderModifier:
+          set:
+          - name: X-Region
+            value: ap-south-1
+
+---
+# US East Region Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-us-east
+  namespace: agentic
+  labels:
+    app: backend
+    region: us-east-1
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: backend
+      region: us-east-1
+  template:
+    metadata:
+      labels:
+        app: backend
+        region: us-east-1
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/region
+                operator: In
+                values:
+                - us-east-1
+      containers:
+      - name: backend
+        image: agentic/backend:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: REGION
+          value: "us-east-1"
+        - name: DATABASE_URL
+          value: "postgresql://db-us-east:5432/agentic"
+        - name: REDIS_URL
+          value: "redis://redis-us-east:6379/0"
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "2Gi"
+          limits:
+            cpu: "2000m"
+            memory: "4Gi"
+
+---
+# EU West Region Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-eu-west
+  namespace: agentic
+  labels:
+    app: backend
+    region: eu-west-1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+      region: eu-west-1
+  template:
+    metadata:
+      labels:
+        app: backend
+        region: eu-west-1
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/region
+                operator: In
+                values:
+                - eu-west-1
+      containers:
+      - name: backend
+        image: agentic/backend:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: REGION
+          value: "eu-west-1"
+        - name: DATABASE_URL
+          value: "postgresql://db-eu-west:5432/agentic"
+        - name: REDIS_URL
+          value: "redis://redis-eu-west:6379/0"
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "2Gi"
+          limits:
+            cpu: "2000m"
+            memory: "4Gi"
+
+---
+# Asia Pacific Region Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-ap-south
+  namespace: agentic
+  labels:
+    app: backend
+    region: ap-south-1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+      region: ap-south-1
+  template:
+    metadata:
+      labels:
+        app: backend
+        region: ap-south-1
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/region
+                operator: In
+                values:
+                - ap-south-1
+      containers:
+      - name: backend
+        image: agentic/backend:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: REGION
+          value: "ap-south-1"
+        - name: DATABASE_URL
+          value: "postgresql://db-ap-south:5432/agentic"
+        - name: REDIS_URL
+          value: "redis://redis-ap-south:6379/0"
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "2Gi"
+          limits:
+            cpu: "2000m"
+            memory: "4Gi"
+
+---
+# Global Load Balancer Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-global
+  namespace: agentic
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "external"
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+spec:
+  type: LoadBalancer
+  selector:
+    app: backend
+  ports:
+  - port: 443
+    targetPort: 8000
+    protocol: TCP
+    name: https
+  - port: 80
+    targetPort: 8000
+    protocol: TCP
+    name: http
+
+---
+# Regional Services
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-us-east
+  namespace: agentic
+spec:
+  type: ClusterIP
+  selector:
+    app: backend
+    region: us-east-1
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-eu-west
+  namespace: agentic
+spec:
+  type: ClusterIP
+  selector:
+    app: backend
+    region: eu-west-1
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-ap-south
+  namespace: agentic
+spec:
+  type: ClusterIP
+  selector:
+    app: backend
+    region: ap-south-1
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+
+---
+# Global CDN Configuration (CloudFront/Cloudflare)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cdn-config
+  namespace: agentic
+data:
+  config.json: |
+    {
+      "origins": [
+        {
+          "id": "us-east-origin",
+          "domain": "backend-us-east.agentic.svc.cluster.local",
+          "priority": 1,
+          "weight": 100
+        },
+        {
+          "id": "eu-west-origin",
+          "domain": "backend-eu-west.agentic.svc.cluster.local",
+          "priority": 1,
+          "weight": 100
+        },
+        {
+          "id": "ap-south-origin",
+          "domain": "backend-ap-south.agentic.svc.cluster.local",
+          "priority": 1,
+          "weight": 100
+        }
+      ],
+      "cache_behaviors": [
+        {
+          "path": "/api/v1/packages",
+          "ttl": 300,
+          "compress": true
+        },
+        {
+          "path": "/api/v1/health",
+          "ttl": 10,
+          "compress": false
+        }
+      ],
+      "geo_routing": {
+        "enabled": true,
+        "rules": [
+          {
+            "countries": ["US", "CA", "MX"],
+            "origin": "us-east-origin"
+          },
+          {
+            "countries": ["GB", "FR", "DE", "IT", "ES"],
+            "origin": "eu-west-origin"
+          },
+          {
+            "countries": ["IN", "SG", "JP", "AU"],
+            "origin": "ap-south-origin"
+          }
+        ]
+      }
+    }
+

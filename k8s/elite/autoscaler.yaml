@@ -1,0 +1,248 @@
+---
+# AI-Driven Horizontal Pod Autoscaler
+# Uses custom metrics from AI scaler for predictive scaling
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: agent-executor-hpa
+  namespace: agentic
+  labels:
+    app: agent-executor
+    tier: elite
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend
+  minReplicas: 2
+  maxReplicas: 50
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+      - type: Pods
+        value: 4
+        periodSeconds: 60
+      selectPolicy: Max
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 25
+        periodSeconds: 60
+      - type: Pods
+        value: 2
+        periodSeconds: 60
+      selectPolicy: Min
+  metrics:
+  # CPU-based scaling
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  
+  # Memory-based scaling
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  
+  # Custom metric: AI-predicted queue depth
+  - type: External
+    external:
+      metric:
+        name: ai_predicted_queue_depth
+        selector:
+          matchLabels:
+            app: agent-executor
+      target:
+        type: AverageValue
+        averageValue: "50"
+  
+  # Custom metric: Agent execution rate
+  - type: Pods
+    pods:
+      metric:
+        name: agent_executions_per_second
+      target:
+        type: AverageValue
+        averageValue: "10"
+
+---
+# ServiceMonitor for Prometheus metrics
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: agent-executor-metrics
+  namespace: agentic
+  labels:
+    app: agent-executor
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  endpoints:
+  - port: metrics
+    interval: 15s
+    path: /metrics
+
+---
+# Custom Metrics API ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ai-scaler-config
+  namespace: agentic
+data:
+  config.yaml: |
+    # AI Scaler Configuration
+    min_replicas: 2
+    max_replicas: 50
+    target_queue_depth: 50
+    prediction_horizon_minutes: 5
+    
+    # Model configuration
+    model_path: /models/scaler_model.pkl
+    training_interval_hours: 24
+    min_training_samples: 100
+    
+    # Scaling policies
+    scale_up_threshold: 1.5
+    scale_down_threshold: 0.5
+    max_scale_up_percent: 50
+    max_scale_down_percent: 25
+    
+    # Metrics collection
+    metrics_retention_hours: 168  # 7 days
+    metrics_collection_interval_seconds: 30
+
+---
+# CronJob for periodic model training
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ai-scaler-training
+  namespace: agentic
+spec:
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: model-trainer
+            image: agentic/backend:latest
+            command:
+            - python
+            - -m
+            - backend.core.ai_scaler
+            - --train
+            env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: database-url
+            - name: REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: redis-url
+            volumeMounts:
+            - name: model-storage
+              mountPath: /models
+          volumes:
+          - name: model-storage
+            persistentVolumeClaim:
+              claimName: ai-scaler-models
+          restartPolicy: OnFailure
+
+---
+# PersistentVolumeClaim for model storage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ai-scaler-models
+  namespace: agentic
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+
+---
+# Service for AI Scaler metrics
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-scaler-metrics
+  namespace: agentic
+  labels:
+    app: ai-scaler
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: metrics
+  selector:
+    app: backend
+
+---
+# PrometheusRule for AI Scaler alerts
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: ai-scaler-alerts
+  namespace: agentic
+spec:
+  groups:
+  - name: ai-scaler
+    interval: 30s
+    rules:
+    - alert: HighPredictedQueueDepth
+      expr: ai_predicted_queue_depth > 100
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High predicted queue depth"
+        description: "AI scaler predicts queue depth of {{ $value }} in next 5 minutes"
+    
+    - alert: ScalingConfidenceLow
+      expr: ai_scaler_confidence < 0.5
+      for: 5m
+      labels:
+        severity: info
+      annotations:
+        summary: "Low scaling prediction confidence"
+        description: "AI scaler confidence is {{ $value }}, may need more training data"
+    
+    - alert: ModelTrainingFailed
+      expr: ai_scaler_training_failures > 3
+      for: 1h
+      labels:
+        severity: critical
+      annotations:
+        summary: "AI scaler model training failing"
+        description: "Model training has failed {{ $value }} times in the last hour"
+    
+    - alert: MaxReplicasReached
+      expr: kube_deployment_spec_replicas{deployment="backend"} >= 50
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Maximum replicas reached"
+        description: "Backend deployment has reached maximum replicas (50)"
+

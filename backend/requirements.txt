@@ -61,3 +61,15 @@ opentelemetry-exporter-otlp-proto-grpc==1.27.0
 # Load Testing
 locust==2.29.1
 
+# Elite Enhancements - Machine Learning
+scikit-learn==1.5.2
+joblib==1.4.2
+numpy==2.1.2
+
+# Elite Enhancements - Multi-Modal
+Pillow==10.4.0
+openai==1.51.2  # For Whisper and vision
+
+# Elite Enhancements - Security
+docker==7.1.0  # For sandbox execution
+
