@@ -1,0 +1,91 @@
+Alembic Database Migrations
+===========================
+
+This directory contains database migration scripts for the Agent Marketplace Platform.
+
+## Quick Start
+
+### Create a new migration
+```bash
+cd backend
+alembic revision --autogenerate -m "Description of changes"
+```
+
+### Apply migrations
+```bash
+alembic upgrade head
+```
+
+### Rollback one migration
+```bash
+alembic downgrade -1
+```
+
+### View migration history
+```bash
+alembic history
+```
+
+### View current version
+```bash
+alembic current
+```
+
+## Initial Setup
+
+The initial migration creates the following tables:
+- customers: Organization and subscription management
+- agent_packages: Agent package configurations
+- deployments: Active agent deployments
+- usage_logs: Usage tracking for billing
+
+## Migration Best Practices
+
+1. Always review auto-generated migrations before applying
+2. Test migrations in development before production
+3. Create backups before running migrations in production
+4. Use descriptive migration messages
+5. Keep migrations small and focused
+
+## Common Commands
+
+```bash
+# Create initial migration
+alembic revision --autogenerate -m "initial schema"
+
+# Apply all pending migrations
+alembic upgrade head
+
+# Rollback to specific version
+alembic downgrade <revision>
+
+# Show SQL without executing
+alembic upgrade head --sql
+
+# Merge multiple heads
+alembic merge heads -m "merge branches"
+```
+
+## Troubleshooting
+
+### Migration conflicts
+If you have multiple migration heads, merge them:
+```bash
+alembic merge heads -m "merge migration branches"
+```
+
+### Reset migrations (development only)
+```bash
+# Drop all tables
+alembic downgrade base
+
+# Reapply all migrations
+alembic upgrade head
+```
+
+### Database out of sync
+```bash
+# Stamp current state
+alembic stamp head
+```
+
