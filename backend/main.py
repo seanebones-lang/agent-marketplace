@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
 from core.config import settings
-from api.v1 import marketplace, health, auth, websocket, analytics, history
+from api.v1 import marketplace, health, auth, websocket, analytics, history, billing
 from database import engine
 from models import base
 
@@ -91,6 +91,12 @@ app.include_router(
     history.router,
     prefix="/api/v1",
     tags=["History"]
+)
+
+app.include_router(
+    billing.router,
+    prefix="/api/v1",
+    tags=["Billing"]
 )
 
 

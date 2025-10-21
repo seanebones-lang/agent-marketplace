@@ -30,6 +30,10 @@ class Customer(Base):
     email = Column(String(255), unique=True, nullable=False)
     is_active = Column(Integer, default=1)
     
+    # Stripe integration
+    stripe_customer_id = Column(String(255), unique=True, nullable=True, index=True)
+    stripe_subscription_id = Column(String(255), nullable=True)
+    
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
