@@ -1,0 +1,575 @@
+{
+  "timestamp": "2025-10-21T02:49:25.854Z",
+  "summary": {
+    "total": 39,
+    "passed": 36,
+    "failed": 3,
+    "passRate": "92.3%"
+  },
+  "categories": {
+    "Page Availability": [
+      {
+        "name": "Homepage loads",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      },
+      {
+        "name": "Agent Marketplace page loads",
+        "path": "/agents",
+        "status": 200,
+        "passed": true,
+        "size": 91199
+      },
+      {
+        "name": "Playground page loads",
+        "path": "/playground",
+        "status": 200,
+        "passed": true,
+        "size": 58390
+      },
+      {
+        "name": "Dashboard page loads",
+        "path": "/dashboard",
+        "status": 200,
+        "passed": true,
+        "size": 64971
+      },
+      {
+        "name": "Pricing page loads",
+        "path": "/pricing",
+        "status": 200,
+        "passed": true,
+        "size": 150495
+      },
+      {
+        "name": "Login page loads",
+        "path": "/login",
+        "status": 200,
+        "passed": false,
+        "size": 53552
+      },
+      {
+        "name": "Signup page loads",
+        "path": "/signup",
+        "status": 200,
+        "passed": true,
+        "size": 55841
+      },
+      {
+        "name": "Documentation page loads",
+        "path": "/docs",
+        "status": 307,
+        "passed": false,
+        "size": 21
+      }
+    ],
+    "Legal & Contact": [
+      {
+        "name": "Homepage contains legal notice",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      },
+      {
+        "name": "Homepage contains contact website",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      },
+      {
+        "name": "Homepage contains contact phone",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      },
+      {
+        "name": "Homepage contains AS IS disclaimer",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      },
+      {
+        "name": "Footer contains legal notice",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      }
+    ],
+    "Core Features": [
+      {
+        "name": "Homepage contains hero section",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      },
+      {
+        "name": "Homepage contains stats",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      },
+      {
+        "name": "Agents page contains agent cards",
+        "path": "/agents",
+        "status": 200,
+        "passed": true,
+        "size": 91199
+      },
+      {
+        "name": "Playground contains mode toggle",
+        "path": "/playground",
+        "status": 200,
+        "passed": true,
+        "size": 58390
+      },
+      {
+        "name": "Dashboard contains analytics",
+        "path": "/dashboard",
+        "status": 200,
+        "passed": true,
+        "size": 64971
+      },
+      {
+        "name": "Pricing contains tiers",
+        "path": "/pricing",
+        "status": 200,
+        "passed": true,
+        "size": 150495
+      }
+    ],
+    "Navigation & UI": [
+      {
+        "name": "Navigation menu present",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      },
+      {
+        "name": "Theme toggle present",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      },
+      {
+        "name": "Footer present on all pages",
+        "path": "/agents",
+        "status": 200,
+        "passed": true,
+        "size": 91199
+      },
+      {
+        "name": "Responsive meta tags present",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      }
+    ],
+    "Agent Marketplace": [
+      {
+        "name": "Security Scanner agent listed",
+        "path": "/agents",
+        "status": 200,
+        "passed": true,
+        "size": 91199
+      },
+      {
+        "name": "Incident Responder agent listed",
+        "path": "/agents",
+        "status": 200,
+        "passed": true,
+        "size": 91199
+      },
+      {
+        "name": "Ticket Resolver agent listed",
+        "path": "/agents",
+        "status": 200,
+        "passed": true,
+        "size": 91199
+      },
+      {
+        "name": "Knowledge Base agent listed",
+        "path": "/agents",
+        "status": 200,
+        "passed": true,
+        "size": 91199
+      },
+      {
+        "name": "Agent search functionality present",
+        "path": "/agents",
+        "status": 200,
+        "passed": true,
+        "size": 91199
+      }
+    ],
+    "Interactive Features": [
+      {
+        "name": "Playground has agent selector",
+        "path": "/playground",
+        "status": 200,
+        "passed": true,
+        "size": 58390
+      },
+      {
+        "name": "Playground has execute button",
+        "path": "/playground",
+        "status": 200,
+        "passed": true,
+        "size": 58390
+      },
+      {
+        "name": "Login has form fields",
+        "path": "/login",
+        "status": 200,
+        "passed": true,
+        "size": 53552
+      },
+      {
+        "name": "Signup has registration form",
+        "path": "/signup",
+        "status": 200,
+        "passed": true,
+        "size": 55841
+      }
+    ],
+    "Performance": [
+      {
+        "name": "Homepage loads quickly",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      },
+      {
+        "name": "Static assets are served",
+        "path": "/_next/static/css",
+        "status": 404,
+        "passed": true,
+        "size": 52191
+      },
+      {
+        "name": "Pages have proper DOCTYPE",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      },
+      {
+        "name": "Pages have proper charset",
+        "path": "/",
+        "status": 200,
+        "passed": false,
+        "size": 98611
+      }
+    ],
+    "SEO & Metadata": [
+      {
+        "name": "Homepage has title tag",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      },
+      {
+        "name": "Homepage has meta description",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      },
+      {
+        "name": "Pages have proper heading structure",
+        "path": "/",
+        "status": 200,
+        "passed": true,
+        "size": 98611
+      }
+    ]
+  },
+  "tests": [
+    {
+      "name": "Homepage loads",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Agent Marketplace page loads",
+      "path": "/agents",
+      "status": 200,
+      "passed": true,
+      "size": 91199
+    },
+    {
+      "name": "Playground page loads",
+      "path": "/playground",
+      "status": 200,
+      "passed": true,
+      "size": 58390
+    },
+    {
+      "name": "Dashboard page loads",
+      "path": "/dashboard",
+      "status": 200,
+      "passed": true,
+      "size": 64971
+    },
+    {
+      "name": "Pricing page loads",
+      "path": "/pricing",
+      "status": 200,
+      "passed": true,
+      "size": 150495
+    },
+    {
+      "name": "Login page loads",
+      "path": "/login",
+      "status": 200,
+      "passed": false,
+      "size": 53552
+    },
+    {
+      "name": "Signup page loads",
+      "path": "/signup",
+      "status": 200,
+      "passed": true,
+      "size": 55841
+    },
+    {
+      "name": "Documentation page loads",
+      "path": "/docs",
+      "status": 307,
+      "passed": false,
+      "size": 21
+    },
+    {
+      "name": "Homepage contains legal notice",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Homepage contains contact website",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Homepage contains contact phone",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Homepage contains AS IS disclaimer",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Footer contains legal notice",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Homepage contains hero section",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Homepage contains stats",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Agents page contains agent cards",
+      "path": "/agents",
+      "status": 200,
+      "passed": true,
+      "size": 91199
+    },
+    {
+      "name": "Playground contains mode toggle",
+      "path": "/playground",
+      "status": 200,
+      "passed": true,
+      "size": 58390
+    },
+    {
+      "name": "Dashboard contains analytics",
+      "path": "/dashboard",
+      "status": 200,
+      "passed": true,
+      "size": 64971
+    },
+    {
+      "name": "Pricing contains tiers",
+      "path": "/pricing",
+      "status": 200,
+      "passed": true,
+      "size": 150495
+    },
+    {
+      "name": "Navigation menu present",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Theme toggle present",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Footer present on all pages",
+      "path": "/agents",
+      "status": 200,
+      "passed": true,
+      "size": 91199
+    },
+    {
+      "name": "Responsive meta tags present",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Security Scanner agent listed",
+      "path": "/agents",
+      "status": 200,
+      "passed": true,
+      "size": 91199
+    },
+    {
+      "name": "Incident Responder agent listed",
+      "path": "/agents",
+      "status": 200,
+      "passed": true,
+      "size": 91199
+    },
+    {
+      "name": "Ticket Resolver agent listed",
+      "path": "/agents",
+      "status": 200,
+      "passed": true,
+      "size": 91199
+    },
+    {
+      "name": "Knowledge Base agent listed",
+      "path": "/agents",
+      "status": 200,
+      "passed": true,
+      "size": 91199
+    },
+    {
+      "name": "Agent search functionality present",
+      "path": "/agents",
+      "status": 200,
+      "passed": true,
+      "size": 91199
+    },
+    {
+      "name": "Playground has agent selector",
+      "path": "/playground",
+      "status": 200,
+      "passed": true,
+      "size": 58390
+    },
+    {
+      "name": "Playground has execute button",
+      "path": "/playground",
+      "status": 200,
+      "passed": true,
+      "size": 58390
+    },
+    {
+      "name": "Login has form fields",
+      "path": "/login",
+      "status": 200,
+      "passed": true,
+      "size": 53552
+    },
+    {
+      "name": "Signup has registration form",
+      "path": "/signup",
+      "status": 200,
+      "passed": true,
+      "size": 55841
+    },
+    {
+      "name": "Homepage loads quickly",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Static assets are served",
+      "path": "/_next/static/css",
+      "status": 404,
+      "passed": true,
+      "size": 52191
+    },
+    {
+      "name": "Pages have proper DOCTYPE",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Pages have proper charset",
+      "path": "/",
+      "status": 200,
+      "passed": false,
+      "size": 98611
+    },
+    {
+      "name": "Homepage has title tag",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Homepage has meta description",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    },
+    {
+      "name": "Pages have proper heading structure",
+      "path": "/",
+      "status": 200,
+      "passed": true,
+      "size": 98611
+    }
+  ]
+}
