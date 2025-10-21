@@ -13,7 +13,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         defaultOptions: {
           queries: {
             staleTime: 5 * 60 * 1000, // 5 minutes
-            cacheTime: 10 * 60 * 1000, // 10 minutes
+            gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
             refetchOnWindowFocus: false,
             retry: (failureCount, error: any) => {
               if (error?.response?.status >= 400 && error?.response?.status < 500) {

@@ -6,10 +6,11 @@ import { FC, ButtonHTMLAttributes } from 'react';
 import { clsx } from 'clsx';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'primary' | 'secondary' | 'outline' | 'danger' | 'destructive' | 'ghost' | 'link';
+  size?: 'sm' | 'md' | 'lg' | 'icon';
   loading?: boolean;
   fullWidth?: boolean;
+  asChild?: boolean;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -25,16 +26,21 @@ export const Button: FC<ButtonProps> = ({
   const baseStyles = 'font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
   
   const variantStyles = {
+    default: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
     primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
     secondary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500',
-    outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50 focus:ring-blue-500',
+    outline: 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800',
     danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
+    destructive: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
+    ghost: 'hover:bg-gray-100 dark:hover:bg-gray-800 focus:ring-gray-500',
+    link: 'text-blue-600 underline-offset-4 hover:underline focus:ring-blue-500',
   };
   
   const sizeStyles = {
     sm: 'px-3 py-1.5 text-sm',
     md: 'px-4 py-2 text-base',
     lg: 'px-6 py-3 text-lg',
+    icon: 'p-2',
   };
 
   return (

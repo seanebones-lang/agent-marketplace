@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -84,7 +84,7 @@ const mockScenarios = {
   }
 }
 
-export default function PlaygroundPage() {
+function PlaygroundContent() {
   const searchParams = useSearchParams()
   const { toast } = useToast()
   
@@ -355,6 +355,14 @@ export default function PlaygroundPage() {
         </Card>
       </div>
     </div>
+  )
+}
+
+export default function PlaygroundPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <PlaygroundContent />
+    </Suspense>
   )
 }
 
