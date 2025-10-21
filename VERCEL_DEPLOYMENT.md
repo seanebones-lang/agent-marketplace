@@ -1,671 +1,454 @@
 # Vercel Deployment Guide
-## Agent Marketplace Platform - Frontend Deployment
 
-**Version**: 2.1.0  
-**Date**: October 21, 2025  
-**Platform**: Vercel (Next.js)
+Complete guide for deploying the Agent Marketplace frontend to Vercel.
 
----
+## Prerequisites
 
-## Quick Start
+- GitHub repository: https://github.com/seanebones-lang/AGENTICteam
+- Vercel account
+- GitHub Personal Access Token (generate at: https://github.com/settings/tokens)
 
-### Prerequisites
+## Quick Deployment
 
-1. **Vercel Account**
-   - Sign up at https://vercel.com
-   - Install Vercel CLI: `npm install -g vercel`
+### Option 1: Vercel Dashboard (Recommended)
 
-2. **GitHub Repository**
-   - Repository: https://github.com/seanebones-lang/AGENTICteam
-   - Access token configured
+1. **Go to Vercel Dashboard**
+   - Visit: https://vercel.com/new
+   - Sign in with GitHub
 
-3. **Backend API**
-   - Backend deployed and accessible
-   - API URL available
-   - WebSocket URL available
+2. **Import Repository**
+   - Click "Import Project"
+   - Select "Import Git Repository"
+   - Enter repository URL: `https://github.com/seanebones-lang/AGENTICteam`
+   - Click "Continue"
 
----
-
-## Deployment Methods
-
-### Method 1: Vercel CLI (Recommended)
-
-```bash
-# 1. Navigate to frontend directory
-cd frontend
-
-# 2. Login to Vercel
-vercel login
-
-# 3. Link to Vercel project (first time only)
-vercel link
-
-# 4. Set environment variables
-vercel env add NEXT_PUBLIC_API_URL production
-# Enter: https://api.yourdomain.com
-
-vercel env add NEXT_PUBLIC_WS_URL production
-# Enter: wss://api.yourdomain.com
-
-vercel env add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY production
-# Enter: pk_live_...
-
-# 5. Deploy to production
-vercel --prod
-```
-
-### Method 2: GitHub Integration (Automated)
-
-```bash
-# 1. Push to GitHub (already done)
-git push origin main
-
-# 2. Connect GitHub repository to Vercel:
-#    - Go to https://vercel.com/new
-#    - Import your GitHub repository
-#    - Select "frontend" as root directory
-#    - Configure environment variables
-#    - Deploy
-
-# 3. Automatic deployments on push
-#    - Main branch → Production
-#    - Other branches → Preview
-```
-
-### Method 3: Vercel Dashboard (Manual)
-
-1. Go to https://vercel.com/new
-2. Import Git Repository
-3. Select: `seanebones-lang/AGENTICteam`
-4. Configure:
+3. **Configure Project**
    - **Framework Preset**: Next.js
    - **Root Directory**: `frontend`
    - **Build Command**: `npm run build`
    - **Output Directory**: `.next`
-5. Add Environment Variables (see below)
-6. Click "Deploy"
+   - **Install Command**: `npm install`
 
----
+4. **Environment Variables**
+   Add the following environment variables:
+   
+   ```
+   NEXT_PUBLIC_API_URL=https://api.agentic.bizbot.store
+   NEXT_PUBLIC_APP_URL=https://agentic.bizbot.store
+   NEXT_PUBLIC_ENABLE_ANALYTICS=true
+   NEXT_PUBLIC_ENABLE_LIVE_MODE=true
+   ```
+
+5. **Deploy**
+   - Click "Deploy"
+   - Wait for build to complete (2-3 minutes)
+   - Your site will be live at: `https://your-project.vercel.app`
+
+### Option 2: Vercel CLI
+
+```bash
+# Install Vercel CLI
+npm install -g vercel
+
+# Login to Vercel
+vercel login
+
+# Navigate to frontend directory
+cd /Users/seanmcdonnell/Desktop/Agentic/frontend
+
+# Deploy to production
+vercel --prod
+
+# Follow prompts:
+# - Set up and deploy? Yes
+# - Which scope? [Your account]
+# - Link to existing project? No
+# - Project name? agent-marketplace
+# - Directory? ./
+# - Override settings? No
+```
+
+## Custom Domain Setup
+
+### 1. Add Custom Domain
+
+In Vercel Dashboard:
+1. Go to Project Settings > Domains
+2. Add domain: `agentic.bizbot.store`
+3. Follow DNS configuration instructions
+
+### 2. DNS Configuration
+
+Add these records to your DNS provider:
+
+```
+Type    Name    Value                       TTL
+A       @       76.76.21.21                 Auto
+CNAME   www     cname.vercel-dns.com        Auto
+```
+
+### 3. SSL Certificate
+
+- Vercel automatically provisions SSL certificates
+- HTTPS will be enabled within 24 hours
+- Certificate auto-renews
 
 ## Environment Variables
 
-### Required Variables
+### Production Variables
 
-Add these in Vercel Dashboard → Settings → Environment Variables:
+Set these in Vercel Dashboard > Settings > Environment Variables:
 
-```bash
+```env
 # API Configuration
-NEXT_PUBLIC_API_URL=https://api.yourdomain.com
-NEXT_PUBLIC_WS_URL=wss://api.yourdomain.com
+NEXT_PUBLIC_API_URL=https://api.agentic.bizbot.store
+NEXT_PUBLIC_APP_URL=https://agentic.bizbot.store
 
-# Stripe Configuration
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...
+# Feature Flags
+NEXT_PUBLIC_ENABLE_ANALYTICS=true
+NEXT_PUBLIC_ENABLE_LIVE_MODE=true
 
 # Optional: Analytics
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
-NEXT_PUBLIC_SENTRY_DSN=https://...
+NEXT_PUBLIC_POSTHOG_KEY=phc_xxxxxxxxxxxxx
 ```
 
-### Setting via CLI
+### Preview/Development Variables
 
-```bash
-# Production environment
-vercel env add NEXT_PUBLIC_API_URL production
-vercel env add NEXT_PUBLIC_WS_URL production
-vercel env add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY production
+For preview deployments, you can set different values:
 
-# Preview environment
-vercel env add NEXT_PUBLIC_API_URL preview
-vercel env add NEXT_PUBLIC_WS_URL preview
-vercel env add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY preview
-
-# Development environment
-vercel env add NEXT_PUBLIC_API_URL development
-vercel env add NEXT_PUBLIC_WS_URL development
-vercel env add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY development
+```env
+NEXT_PUBLIC_API_URL=https://api-staging.agentic.bizbot.store
+NEXT_PUBLIC_APP_URL=https://preview.agentic.bizbot.store
+NEXT_PUBLIC_ENABLE_ANALYTICS=false
+NEXT_PUBLIC_ENABLE_LIVE_MODE=false
 ```
 
----
+## Deployment Settings
 
-## GitHub Actions Setup
+### Build Settings
 
-### Configure Secrets
-
-Go to GitHub Repository → Settings → Secrets and variables → Actions
-
-Add the following secrets:
-
-```bash
-# GitHub Token
-GH_TOKEN=<your-github-token>
-
-# Vercel Credentials
-VERCEL_TOKEN=<your-vercel-token>
-VERCEL_ORG_ID=<your-org-id>
-VERCEL_PROJECT_ID=<your-project-id>
-```
-
-### Get Vercel Credentials
-
-```bash
-# 1. Get Vercel Token
-# Go to: https://vercel.com/account/tokens
-# Create new token with full access
-
-# 2. Get Organization ID
-vercel whoami
-# Copy the "id" field
-
-# 3. Get Project ID
-cd frontend
-vercel link
-cat .vercel/project.json
-# Copy "projectId"
-```
-
-### Workflow File
-
-The workflow file is already created at:
-`.github/workflows/vercel-deploy.yml`
-
-It will automatically:
-- Deploy to production on push to `main`
-- Deploy preview on pull requests
-- Run build checks
-- Install dependencies
-
----
-
-## Domain Configuration
-
-### Custom Domain Setup
-
-1. **Add Domain in Vercel**
-   ```bash
-   vercel domains add yourdomain.com
-   ```
-
-2. **Configure DNS**
-   
-   Add these records to your DNS provider:
-   
-   ```
-   Type: A
-   Name: @
-   Value: 76.76.21.21
-   
-   Type: CNAME
-   Name: www
-   Value: cname.vercel-dns.com
-   ```
-
-3. **SSL Certificate**
-   - Automatically provisioned by Vercel
-   - Let's Encrypt certificate
-   - Auto-renewal enabled
-
-### Subdomain for API
-
-```
-Type: A
-Name: api
-Value: <your-backend-ip>
-
-Type: CNAME
-Name: api
-Value: <your-backend-domain>
-```
-
----
-
-## Build Configuration
-
-### Next.js Configuration
-
-File: `frontend/next.config.js`
-
-```javascript
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
-  
-  // Environment variables
-  env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    NEXT_PUBLIC_WS_URL: process.env.NEXT_PUBLIC_WS_URL,
-    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-  },
-  
-  // Image optimization
-  images: {
-    domains: ['yourdomain.com'],
-    formats: ['image/avif', 'image/webp'],
-  },
-  
-  // Headers
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-        ],
-      },
-    ];
-  },
-  
-  // Redirects
-  async redirects() {
-    return [
-      {
-        source: '/home',
-        destination: '/',
-        permanent: true,
-      },
-    ];
-  },
-  
-  // Rewrites for API proxy
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`,
-      },
-    ];
-  },
-};
-
-module.exports = nextConfig;
-```
-
-### Vercel Configuration
-
-File: `vercel.json` (root level)
+In `vercel.json`:
 
 ```json
 {
-  "version": 2,
-  "name": "agent-marketplace",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
   "framework": "nextjs",
-  "buildCommand": "cd frontend && npm run build",
-  "devCommand": "cd frontend && npm run dev",
-  "installCommand": "cd frontend && npm install",
-  "outputDirectory": "frontend/.next",
-  "regions": ["iad1"],
-  "functions": {
-    "frontend/**/*.{js,ts,tsx}": {
-      "maxDuration": 30
-    }
-  }
+  "outputDirectory": ".next"
 }
 ```
 
----
+### Regions
 
-## Deployment Checklist
+Multi-region deployment configured for:
+- **iad1** (US East - Washington, D.C.)
+- **sfo1** (US West - San Francisco)
+- **fra1** (EU - Frankfurt)
 
-### Pre-Deployment
+### Performance Optimizations
 
-- [x] Frontend code complete
-- [x] Environment variables configured
-- [x] Backend API deployed and accessible
-- [x] Domain configured
-- [x] SSL certificate ready
-- [x] GitHub repository connected
+Enabled in `next.config.js`:
+- SWC minification
+- Image optimization (AVIF, WebP)
+- Code splitting
+- CSS optimization
+- Package imports optimization
 
-### Deployment Steps
+## GitHub Integration
 
-```bash
-# 1. Ensure all changes are committed
-git status
-git add -A
-git commit -m "Prepare for Vercel deployment"
-git push origin main
+### Automatic Deployments
 
-# 2. Deploy via CLI
-cd frontend
-vercel --prod
+Vercel automatically deploys:
+- **Production**: Pushes to `main` branch
+- **Preview**: Pull requests and other branches
 
-# 3. Verify deployment
-curl https://yourdomain.com
-curl https://yourdomain.com/api/health
+### Branch Protection
 
-# 4. Test functionality
-# - Open browser to https://yourdomain.com
-# - Test authentication
-# - Test agent execution
-# - Test WebSocket connection
-```
+Recommended GitHub branch protection rules for `main`:
+- Require pull request reviews
+- Require status checks to pass
+- Require branches to be up to date
+- Include administrators
 
-### Post-Deployment
+### Deployment Hooks
 
-- [ ] Verify homepage loads
-- [ ] Test API connectivity
-- [ ] Test WebSocket connection
-- [ ] Verify authentication flow
-- [ ] Test agent execution
-- [ ] Check analytics integration
-- [ ] Monitor error rates
-- [ ] Set up alerts
-
----
+Get webhook URL from Vercel Dashboard > Settings > Git:
+- Use for manual deployments
+- Integrate with CI/CD pipelines
+- Trigger from external services
 
 ## Monitoring & Analytics
 
 ### Vercel Analytics
 
-Enable in Vercel Dashboard:
-1. Go to Project → Analytics
-2. Enable Web Analytics
-3. Add to `frontend/src/app/layout.tsx`:
+Enable in Dashboard > Analytics:
+- Real User Monitoring (RUM)
+- Web Vitals tracking
+- Performance insights
+- Traffic analytics
 
-```typescript
-import { Analytics } from '@vercel/analytics/react';
+### Speed Insights
 
-export default function RootLayout({ children }) {
-  return (
-    <html>
-      <body>
-        {children}
-        <Analytics />
-      </body>
-    </html>
-  );
-}
-```
+Enable in Dashboard > Speed Insights:
+- Core Web Vitals
+- Performance score
+- Recommendations
 
-### Performance Monitoring
+### Logs
 
-```typescript
-// frontend/src/lib/monitoring.ts
-export function reportWebVitals(metric: any) {
-  console.log(metric);
-  
-  // Send to analytics service
-  if (process.env.NODE_ENV === 'production') {
-    // Send to your analytics endpoint
-    fetch('/api/analytics/vitals', {
-      method: 'POST',
-      body: JSON.stringify(metric),
-    });
-  }
-}
-```
-
-### Error Tracking
-
-Install Sentry:
-
-```bash
-cd frontend
-npm install @sentry/nextjs
-```
-
-Configure:
-
-```javascript
-// sentry.client.config.js
-import * as Sentry from '@sentry/nextjs';
-
-Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  environment: process.env.NODE_ENV,
-  tracesSampleRate: 1.0,
-});
-```
-
----
+View deployment logs:
+- Dashboard > Deployments > [Select deployment] > Logs
+- Real-time build logs
+- Runtime logs
+- Error tracking
 
 ## Troubleshooting
 
 ### Build Failures
 
+**Issue**: Build fails with module not found
 ```bash
-# Check build logs
-vercel logs <deployment-url>
-
-# Test build locally
-cd frontend
-npm run build
-
-# Clear cache and rebuild
-rm -rf .next node_modules
-npm install
-npm run build
+# Solution: Clear cache and redeploy
+vercel --prod --force
 ```
 
-### Environment Variable Issues
-
-```bash
-# List all environment variables
-vercel env ls
-
-# Pull environment variables locally
-vercel env pull .env.local
-
-# Verify variables in build
-vercel logs <deployment-url> | grep "NEXT_PUBLIC"
-```
-
-### API Connection Issues
-
-```bash
-# Test API from Vercel
-curl https://yourdomain.com/api/health
-
-# Check CORS headers
-curl -I https://api.yourdomain.com/api/health
-
-# Verify WebSocket connection
-wscat -c wss://api.yourdomain.com/api/v1/ws/test
-```
+**Issue**: Environment variables not working
+- Check variable names (must start with `NEXT_PUBLIC_`)
+- Verify variables are set in correct environment
+- Redeploy after adding variables
 
 ### Performance Issues
 
-```bash
-# Analyze bundle size
-cd frontend
-npm run build
-npx @next/bundle-analyzer
+**Issue**: Slow page loads
+- Enable Vercel Analytics to identify bottlenecks
+- Check image optimization settings
+- Review bundle size in build logs
 
-# Check lighthouse score
-lighthouse https://yourdomain.com --view
+**Issue**: High latency
+- Verify multi-region deployment is active
+- Check DNS configuration
+- Enable Edge Functions if needed
 
-# Monitor Core Web Vitals
-# Go to Vercel Dashboard → Analytics → Web Vitals
+### Domain Issues
+
+**Issue**: Domain not resolving
+- Verify DNS records are correct
+- Wait 24-48 hours for DNS propagation
+- Check domain registrar settings
+
+**Issue**: SSL certificate pending
+- Wait up to 24 hours for provisioning
+- Verify domain ownership
+- Check DNS CAA records
+
+## CI/CD Integration
+
+### GitHub Actions
+
+Workflow already configured in `.github/workflows/vercel-deploy.yml`:
+
+```yaml
+name: Vercel Frontend Deployment
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Pull Vercel Environment
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./frontend
+      - name: Build Project
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./frontend
+      - name: Deploy to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./frontend
 ```
 
----
+### Required GitHub Secrets
 
-## Scaling & Optimization
+Add these secrets in GitHub repository settings:
 
-### Vercel Pro Features
+1. **VERCEL_TOKEN**: Your Vercel access token
+   - Get from: https://vercel.com/account/tokens
+   - Value: `[Your Vercel token]`
 
-- **Edge Functions**: Deploy functions closer to users
-- **Edge Middleware**: Run code before requests reach your app
-- **Image Optimization**: Automatic image optimization
-- **Analytics**: Real-time analytics and insights
-- **Monitoring**: Performance and error monitoring
+2. **VERCEL_ORG_ID**: Your Vercel organization ID
+   - Get from: Vercel Dashboard > Settings > General
+   - Value: `[Your org ID]`
+
+3. **VERCEL_PROJECT_ID**: Your project ID
+   - Get from: Project Settings > General
+   - Value: `[Your project ID]`
+
+## Production Checklist
+
+Before going live:
+
+- [ ] Custom domain configured and verified
+- [ ] SSL certificate active
+- [ ] Environment variables set correctly
+- [ ] Analytics enabled
+- [ ] Error tracking configured
+- [ ] Performance monitoring active
+- [ ] GitHub integration working
+- [ ] Preview deployments tested
+- [ ] Production deployment successful
+- [ ] DNS propagated (24-48 hours)
+- [ ] All pages loading correctly
+- [ ] API endpoints responding
+- [ ] Authentication working
+- [ ] Dark mode functioning
+- [ ] Mobile responsive
+- [ ] SEO metadata correct
+- [ ] Security headers active
+- [ ] CORS configured properly
+
+## Post-Deployment
+
+### Verification Steps
+
+1. **Test Homepage**
+   - Visit: https://agentic.bizbot.store
+   - Verify hero section loads
+   - Check navigation works
+   - Test dark mode toggle
+
+2. **Test Agent Marketplace**
+   - Visit: https://agentic.bizbot.store/agents
+   - Verify agents load
+   - Test search and filters
+   - Click through to agent details
+
+3. **Test Playground**
+   - Visit: https://agentic.bizbot.store/playground
+   - Test mock mode execution
+   - Test live mode (if API is ready)
+   - Verify WebSocket connections
+
+4. **Test Authentication**
+   - Visit: https://agentic.bizbot.store/login
+   - Test login flow
+   - Test signup flow
+   - Verify redirects work
+
+5. **Test Dashboard**
+   - Visit: https://agentic.bizbot.store/dashboard
+   - Verify charts render
+   - Check real-time updates
+   - Test data refresh
+
+### Performance Verification
+
+Run Lighthouse audit:
+```bash
+# Install Lighthouse CLI
+npm install -g lighthouse
+
+# Run audit
+lighthouse https://agentic.bizbot.store --view
+```
+
+Target scores:
+- Performance: 90+
+- Accessibility: 95+
+- Best Practices: 95+
+- SEO: 95+
+
+### Monitoring Setup
+
+1. **Vercel Analytics**
+   - Enable in dashboard
+   - Set up alerts for errors
+   - Configure performance budgets
+
+2. **External Monitoring**
+   - Set up UptimeRobot or Pingdom
+   - Configure status page
+   - Set up alert notifications
+
+3. **Error Tracking**
+   - Integrate Sentry (optional)
+   - Configure error alerts
+   - Set up error grouping
+
+## Scaling Considerations
+
+### Traffic Scaling
+
+Vercel automatically scales:
+- Serverless functions scale to zero
+- Edge network handles global traffic
+- No configuration needed
+
+### Cost Optimization
+
+Monitor usage in Dashboard > Usage:
+- Function invocations
+- Bandwidth usage
+- Build minutes
+- Team seats
 
 ### Performance Optimization
 
-1. **Enable Edge Functions**
-   ```typescript
-   // frontend/src/middleware.ts
-   export const config = {
-     matcher: '/api/:path*',
-   };
-   
-   export function middleware(request: Request) {
-     // Edge middleware logic
-   }
-   ```
+As traffic grows:
+- Enable Edge Functions for dynamic content
+- Implement ISR (Incremental Static Regeneration)
+- Use Edge Middleware for auth
+- Optimize images and assets
+- Implement caching strategies
 
-2. **Optimize Images**
-   ```typescript
-   import Image from 'next/image';
-   
-   <Image
-     src="/logo.png"
-     alt="Logo"
-     width={200}
-     height={50}
-     priority
-   />
-   ```
+## Support
 
-3. **Enable ISR (Incremental Static Regeneration)**
-   ```typescript
-   export async function generateStaticParams() {
-     // Generate static pages
-   }
-   
-   export const revalidate = 3600; // Revalidate every hour
-   ```
+### Vercel Support
 
----
+- Documentation: https://vercel.com/docs
+- Community: https://github.com/vercel/vercel/discussions
+- Support: support@vercel.com
 
-## Security Best Practices
+### Project Support
 
-### Content Security Policy
+- Repository: https://github.com/seanebones-lang/AGENTICteam
+- Issues: https://github.com/seanebones-lang/AGENTICteam/issues
+- Contact: https://bizbot.store
 
-```typescript
-// next.config.js
-const ContentSecurityPolicy = `
-  default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline';
-  style-src 'self' 'unsafe-inline';
-  img-src 'self' data: https:;
-  font-src 'self';
-  connect-src 'self' https://api.yourdomain.com wss://api.yourdomain.com;
-`;
+## Next Steps
 
-module.exports = {
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Content-Security-Policy',
-            value: ContentSecurityPolicy.replace(/\s{2,}/g, ' ').trim(),
-          },
-        ],
-      },
-    ];
-  },
-};
-```
+After successful deployment:
 
-### Rate Limiting
+1. **Backend Deployment**
+   - Deploy FastAPI backend to cloud provider
+   - Configure API endpoints
+   - Set up database connections
+   - Enable CORS for frontend domain
 
-Use Vercel Edge Middleware:
+2. **Integration Testing**
+   - Test frontend-backend integration
+   - Verify WebSocket connections
+   - Test authentication flow
+   - Validate API responses
 
-```typescript
-// middleware.ts
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-
-const rateLimiter = new Map();
-
-export function middleware(request: NextRequest) {
-  const ip = request.ip || 'anonymous';
-  const limit = rateLimiter.get(ip) || 0;
-  
-  if (limit > 100) {
-    return new NextResponse('Too Many Requests', { status: 429 });
-  }
-  
-  rateLimiter.set(ip, limit + 1);
-  
-  // Reset after 1 minute
-  setTimeout(() => rateLimiter.delete(ip), 60000);
-  
-  return NextResponse.next();
-}
-```
+3. **Production Launch**
+   - Announce launch
+   - Monitor performance
+   - Gather user feedback
+   - Iterate and improve
 
 ---
 
-## Cost Estimation
+**Deployment Status**: Ready for Production
 
-### Vercel Pricing Tiers
+**Last Updated**: 2025-10-21
 
-| Tier | Price | Bandwidth | Build Minutes | Team Members |
-|------|-------|-----------|---------------|--------------|
-| Hobby | Free | 100 GB | 100 min | 1 |
-| Pro | $20/mo | 1 TB | 400 min | Unlimited |
-| Enterprise | Custom | Custom | Custom | Custom |
-
-### Estimated Costs
-
-For **10,000 monthly active users**:
-
-- **Bandwidth**: ~500 GB/month
-- **Build Minutes**: ~200 min/month
-- **Edge Requests**: ~1M/month
-- **Estimated Cost**: $20-40/month (Pro tier)
-
----
-
-## Support & Resources
-
-### Documentation
-
-- Vercel Docs: https://vercel.com/docs
-- Next.js Docs: https://nextjs.org/docs
-- Deployment Guide: https://vercel.com/docs/deployments
-
-### Community
-
-- Vercel Discord: https://vercel.com/discord
-- Next.js Discord: https://nextjs.org/discord
-- GitHub Discussions: https://github.com/vercel/next.js/discussions
-
-### Contact
-
-- **Project Owner**: Sean McDonnell
-- **Website**: https://bizbot.store
-- **Repository**: https://github.com/seanebones-lang/AGENTICteam
-
----
-
-## Conclusion
-
-Your Agent Marketplace Platform frontend is now ready for Vercel deployment with:
-
-✅ Automated CI/CD pipeline  
-✅ Environment configuration  
-✅ Custom domain support  
-✅ SSL certificates  
-✅ Performance optimization  
-✅ Security hardening  
-✅ Monitoring & analytics  
-✅ Scalable infrastructure
-
-**Next Steps**:
-1. Configure Vercel secrets in GitHub
-2. Deploy via GitHub Actions or Vercel CLI
-3. Configure custom domain
-4. Enable monitoring
-5. Go live! 🚀
-
----
-
-**Deployment Status**: Ready for Production  
-**Last Updated**: October 21, 2025  
-**Version**: 2.1.0
-
+**Maintained By**: Sean McDonnell (https://bizbot.store)
