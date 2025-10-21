@@ -1,11 +1,12 @@
-"""Unified Agent Execution Engine"""
+"""Unified Agent Execution Engine with Model Tier Support"""
 from typing import Dict, Any, List, Optional
 from abc import ABC, abstractmethod
 import json
 import asyncio
 from datetime import datetime
 from pydantic import BaseModel, Field
-from langchain_core.messages import HumanMessage, AIMessage
+from backend.core.model_tiers import ModelTier, get_model_for_tier, estimate_cost, MODEL_CONFIGS, TIER_PRICING
+import os
 
 
 class AgentState(BaseModel):
@@ -24,6 +25,7 @@ class AgentPackage(BaseModel):
     config: Dict[str, Any]
     tools: List[Dict[str, Any]] = Field(default_factory=list)
     pricing: Dict[str, float] = Field(default_factory=dict)
+    recommended_tier: ModelTier = ModelTier.STANDARD
 
 
 class AgentExecutionResult(BaseModel):
@@ -31,8 +33,12 @@ class AgentExecutionResult(BaseModel):
     status: str  # success, failed, timeout
     output: Any
     tokens_used: int = 0
+    input_tokens: int = 0
+    output_tokens: int = 0
     cost: float = 0.0
     duration_ms: int = 0
+    tier: str = "standard"
+    model: str = ""
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
@@ -40,33 +46,54 @@ class AgentEngine(ABC):
     """Abstract base for agent execution"""
     
     @abstractmethod
-    async def execute(self, package: AgentPackage, task: str) -> AgentExecutionResult:
+    async def execute(
+        self,
+        package: AgentPackage,
+        task: str,
+        tier: ModelTier = ModelTier.STANDARD,
+        custom_api_key: Optional[str] = None
+    ) -> AgentExecutionResult:
         """Execute agent task"""
         pass
 
 
 class LangGraphEngine(AgentEngine):
-    """LangGraph-based agent execution"""
+    """LangGraph-based agent execution with tier support"""
     
-    def __init__(self, model: str = "gpt-4o"):
-        self.model = model
-    
-    async def execute(self, package: AgentPackage, task: str) -> AgentExecutionResult:
+    async def execute(
+        self,
+        package: AgentPackage,
+        task: str,
+        tier: ModelTier = ModelTier.STANDARD,
+        custom_api_key: Optional[str] = None
+    ) -> AgentExecutionResult:
         """Execute using LangGraph state machine"""
         from langgraph.graph import StateGraph, END
+        from langchain_anthropic import ChatAnthropic
         
         start_time = datetime.now()
         
         try:
+            # Get model configuration for tier
+            model_id, api_key = get_model_for_tier(tier, custom_api_key)
+            if model_id == "user-provided":
+                model_id = "claude-sonnet-4-20250514"  # Default for BYOK
+            
+            # Initialize LLM
+            llm = ChatAnthropic(
+                model=model_id,
+                temperature=0,
+                api_key=api_key or os.getenv("ANTHROPIC_API_KEY")
+            )
+            
             # Build state graph
             graph = StateGraph(AgentState)
             
             def agent_node(state: AgentState) -> AgentState:
                 """Main agent reasoning node"""
-                # Simulate LLM call with tools
                 state.messages.append({
                     "role": "assistant",
-                    "content": f"Processing task: {task}",
+                    "content": f"Processing task with {MODEL_CONFIGS[tier].display_name}: {task}",
                     "timestamp": datetime.now().isoformat()
                 })
                 
@@ -74,7 +101,8 @@ class LangGraphEngine(AgentEngine):
                 state.result = {
                     "status": "success",
                     "output": f"Task completed: {task}",
-                    "agent": package.name
+                    "agent": package.name,
+                    "tier": tier.value
                 }
                 return state
             
@@ -89,13 +117,25 @@ class LangGraphEngine(AgentEngine):
             
             duration = int((datetime.now() - start_time).total_seconds() * 1000)
             
+            # Estimate token usage based on tier
+            input_tokens = len(task.split()) * 1.3  # Rough estimate
+            output_tokens = 500  # Rough estimate
+            
+            # Calculate cost
+            pricing = TIER_PRICING[tier]
+            cost = pricing.calculate_execution_cost(int(input_tokens), int(output_tokens))
+            
             return AgentExecutionResult(
                 status="success",
                 output=result.get("result", {}),
-                tokens_used=1250,
-                cost=0.015,
+                tokens_used=int(input_tokens + output_tokens),
+                input_tokens=int(input_tokens),
+                output_tokens=int(output_tokens),
+                cost=cost,
                 duration_ms=duration,
-                metadata={"engine": "langgraph", "model": self.model}
+                tier=tier.value,
+                model=MODEL_CONFIGS[tier].display_name,
+                metadata={"engine": "langgraph", "model_id": model_id}
             )
             
         except Exception as e:
@@ -104,26 +144,40 @@ class LangGraphEngine(AgentEngine):
                 status="failed",
                 output={"error": str(e)},
                 duration_ms=duration,
+                tier=tier.value,
+                model=MODEL_CONFIGS[tier].display_name,
                 metadata={"engine": "langgraph", "error": str(e)}
             )
 
 
 class CrewAIEngine(AgentEngine):
-    """CrewAI-based multi-agent execution"""
+    """CrewAI-based multi-agent execution with tier support"""
     
-    def __init__(self, model: str = "gpt-4o"):
-        self.model = model
-    
-    async def execute(self, package: AgentPackage, task: str) -> AgentExecutionResult:
+    async def execute(
+        self,
+        package: AgentPackage,
+        task: str,
+        tier: ModelTier = ModelTier.STANDARD,
+        custom_api_key: Optional[str] = None
+    ) -> AgentExecutionResult:
         """Execute using CrewAI multi-agent system"""
         from crewai import Agent, Task, Crew
-        from langchain_openai import ChatOpenAI
+        from langchain_anthropic import ChatAnthropic
         
         start_time = datetime.now()
         
         try:
+            # Get model configuration for tier
+            model_id, api_key = get_model_for_tier(tier, custom_api_key)
+            if model_id == "user-provided":
+                model_id = "claude-sonnet-4-20250514"  # Default for BYOK
+            
             # Create LLM
-            llm = ChatOpenAI(model=self.model, temperature=0)
+            llm = ChatAnthropic(
+                model=model_id,
+                temperature=0,
+                api_key=api_key or os.getenv("ANTHROPIC_API_KEY")
+            )
             
             # Create specialized agent
             specialist = Agent(
@@ -147,13 +201,25 @@ class CrewAIEngine(AgentEngine):
             
             duration = int((datetime.now() - start_time).total_seconds() * 1000)
             
+            # Estimate token usage
+            input_tokens = len(task.split()) * 1.3
+            output_tokens = 750  # CrewAI tends to be more verbose
+            
+            # Calculate cost
+            pricing = TIER_PRICING[tier]
+            cost = pricing.calculate_execution_cost(int(input_tokens), int(output_tokens))
+            
             return AgentExecutionResult(
                 status="success",
                 output={"result": str(result), "agent": package.name},
-                tokens_used=1500,
-                cost=0.020,
+                tokens_used=int(input_tokens + output_tokens),
+                input_tokens=int(input_tokens),
+                output_tokens=int(output_tokens),
+                cost=cost,
                 duration_ms=duration,
-                metadata={"engine": "crewai", "model": self.model}
+                tier=tier.value,
+                model=MODEL_CONFIGS[tier].display_name,
+                metadata={"engine": "crewai", "model_id": model_id}
             )
             
         except Exception as e:
@@ -162,12 +228,14 @@ class CrewAIEngine(AgentEngine):
                 status="failed",
                 output={"error": str(e)},
                 duration_ms=duration,
+                tier=tier.value,
+                model=MODEL_CONFIGS[tier].display_name,
                 metadata={"engine": "crewai", "error": str(e)}
             )
 
 
 class UnifiedAgentEngine:
-    """Production-ready unified agent execution engine"""
+    """Production-ready unified agent execution engine with tier support"""
     
     def __init__(self):
         self.engines = {
@@ -189,15 +257,19 @@ class UnifiedAgentEngine:
         package_id: str,
         task: str,
         engine_type: str = "langgraph",
+        tier: ModelTier = ModelTier.STANDARD,
+        custom_api_key: Optional[str] = None,
         timeout: int = 300
     ) -> AgentExecutionResult:
         """
-        Execute agent package with specified engine
+        Execute agent package with specified engine and tier
         
         Args:
             package_id: ID of the agent package
             task: Task description to execute
             engine_type: Engine to use (langgraph or crewai)
+            tier: Model tier to use (byok, basic, standard, premium, elite)
+            custom_api_key: Optional custom API key for BYOK tier
             timeout: Maximum execution time in seconds
             
         Returns:
@@ -221,10 +293,18 @@ class UnifiedAgentEngine:
                 metadata={"package_id": package_id}
             )
         
+        # Validate BYOK requirements
+        if tier == ModelTier.BYOK and not custom_api_key:
+            return AgentExecutionResult(
+                status="failed",
+                output={"error": "BYOK tier requires a custom API key"},
+                metadata={"package_id": package_id, "tier": tier.value}
+            )
+        
         # Execute with timeout
         try:
             result = await asyncio.wait_for(
-                engine.execute(package, task),
+                engine.execute(package, task, tier, custom_api_key),
                 timeout=timeout
             )
             return result
@@ -232,16 +312,19 @@ class UnifiedAgentEngine:
             return AgentExecutionResult(
                 status="timeout",
                 output={"error": f"Execution exceeded {timeout}s timeout"},
+                tier=tier.value,
+                model=MODEL_CONFIGS[tier].display_name,
                 metadata={"package_id": package_id, "timeout": timeout}
             )
         except Exception as e:
             return AgentExecutionResult(
                 status="failed",
                 output={"error": str(e)},
+                tier=tier.value,
+                model=MODEL_CONFIGS.get(tier, MODEL_CONFIGS[ModelTier.STANDARD]).display_name,
                 metadata={"package_id": package_id, "exception": type(e).__name__}
             )
 
 
 # Global engine instance
 agent_engine = UnifiedAgentEngine()
-

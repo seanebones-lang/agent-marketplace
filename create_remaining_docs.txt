@@ -1,0 +1,31 @@
+Remaining Documentation Pages Needed:
+
+Agent Pages (4):
+- /docs/agents/security-scanner
+- /docs/agents/incident-responder
+- /docs/agents/ticket-resolver
+- /docs/agents/knowledge-base
+
+API Pages (4):
+- /docs/api/websocket
+- /docs/api/auth
+- /docs/api/rate-limits
+- /docs/api/errors
+
+Security Pages (4):
+- /docs/security/overview
+- /docs/security/zero-trust
+- /docs/security/compliance
+- /docs/security/privacy
+
+Guides Pages (4):
+- /docs/guides/orchestration
+- /docs/guides/multimodal
+- /docs/guides/performance
+- /docs/guides/monitoring
+
+Resource Pages (2):
+- /docs/changelog
+- /docs/migration
+
+Total: 18 pages remaining

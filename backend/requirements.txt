@@ -73,3 +73,14 @@ openai==1.51.2  # For Whisper and vision
 # Elite Enhancements - Security
 docker==7.1.0  # For sandbox execution
 
+# Additional Agent Dependencies
+beautifulsoup4==4.12.3  # Web scraping for security scanner
+requests==2.32.3  # HTTP requests
+aiohttp==3.10.5  # Async HTTP
+python-nmap==0.7.1  # Network scanning
+validators==0.28.3  # URL/email validation
+tiktoken==0.7.0  # Token counting
+tenacity==9.0.0  # Retry logic
+python-dateutil==2.9.0  # Date parsing
+jinja2==3.1.4  # Template rendering for reports
+
