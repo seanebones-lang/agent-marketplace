@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Zap } from 'lucide-react'
+import { Zap, Phone, Globe } from 'lucide-react'
 
 const navigation = {
   product: [
@@ -30,10 +30,38 @@ export function Footer() {
               <Zap className="h-8 w-8 text-blue-600" />
               <span className="text-xl font-bold">Agent Marketplace</span>
             </Link>
-            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-md">
+            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-md mb-4">
               Enterprise AI Agent Platform with military-grade security. Deploy, manage, and scale autonomous agents.
             </p>
-            <div className="mt-4 flex items-center gap-2">
+            
+            {/* Legal Notice */}
+            <div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+              <p className="text-xs font-semibold text-yellow-900 dark:text-yellow-100 mb-2">
+                ⚠️ PROPRIETARY SOFTWARE - FOR SALE
+              </p>
+              <p className="text-xs text-yellow-800 dark:text-yellow-200 mb-2">
+                This software is sold "AS IS" without warranty. All rights reserved.
+              </p>
+              <div className="space-y-1">
+                <p className="text-xs font-semibold text-yellow-900 dark:text-yellow-100">
+                  Contact for Purchase:
+                </p>
+                <div className="flex items-center gap-2 text-xs text-yellow-800 dark:text-yellow-200">
+                  <Globe className="h-3 w-3" />
+                  <a href="https://bizbot.store" target="_blank" rel="noopener noreferrer" className="hover:underline font-semibold">
+                    bizbot.store
+                  </a>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-yellow-800 dark:text-yellow-200">
+                  <Phone className="h-3 w-3" />
+                  <a href="tel:+18176759898" className="hover:underline font-semibold">
+                    (817) 675-9898
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-2">
               <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
               <span className="text-xs text-gray-600 dark:text-gray-400">All systems operational</span>
             </div>

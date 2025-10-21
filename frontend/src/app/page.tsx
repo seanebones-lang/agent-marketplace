@@ -1,8 +1,11 @@
 import Link from 'next/link'
-import { ArrowRight, Zap, Shield, Globe, TrendingUp, Users, Code } from 'lucide-react'
+import { ArrowRight, Zap, Shield, Globe as GlobeIcon, TrendingUp, Users, Code } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+
+// Rename Globe import to avoid conflict
+const Globe = GlobeIcon
 
 export default function HomePage() {
   return (
@@ -108,7 +111,7 @@ export default function HomePage() {
             </Card>
 
             <Card className="p-6 hover:shadow-lg transition-shadow">
-              <Globe className="h-12 w-12 text-blue-600 mb-4" />
+              <GlobeIcon className="h-12 w-12 text-blue-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">Global Multi-Region</h3>
               <p className="text-gray-600 dark:text-gray-400">
                 Deployed across US, EU, and APAC with intelligent geo-routing. 45ms P99 latency globally.
@@ -181,6 +184,52 @@ export default function HomePage() {
             <Badge variant="outline" className="text-lg px-6 py-2">GDPR Compliant</Badge>
             <Badge variant="outline" className="text-lg px-6 py-2">HIPAA Ready</Badge>
             <Badge variant="outline" className="text-lg px-6 py-2">FedRAMP Ready</Badge>
+          </div>
+        </div>
+      </section>
+
+      {/* Legal Notice Section */}
+      <section className="py-12 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border-y border-yellow-200 dark:border-yellow-800">
+        <div className="mx-auto max-w-4xl px-6 lg:px-8">
+          <div className="text-center">
+            <Badge className="mb-4 bg-yellow-600 hover:bg-yellow-700">Important Legal Notice</Badge>
+            <h3 className="text-2xl font-bold mb-4">Proprietary Software - For Sale</h3>
+            <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
+              This software is proprietary and sold "AS IS" without warranty. All rights reserved.
+            </p>
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg mb-6">
+              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                ⚠️ NO EVALUATION OR USE WITHOUT LICENSE
+              </p>
+              <div className="space-y-3">
+                <div>
+                  <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    Contact for Purchase & Licensing:
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a 
+                      href="https://bizbot.store" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                    >
+                      <Globe className="h-5 w-5" />
+                      bizbot.store
+                    </a>
+                    <a 
+                      href="tel:+18176759898"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                    >
+                      <Users className="h-5 w-5" />
+                      (817) 675-9898
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p className="text-xs text-gray-600 dark:text-gray-400">
+              Copyright © 2025 Sean McDonnell. All Rights Reserved.
+            </p>
           </div>
         </div>
       </section>
